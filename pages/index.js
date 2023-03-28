@@ -1,3 +1,4 @@
+import Page from "@/components/pages/Page";
 import { actionFetchAllGames } from "@/store/actions/games.actions";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

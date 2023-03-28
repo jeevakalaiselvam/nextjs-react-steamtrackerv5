@@ -18,3 +18,12 @@ export const actionFetchAllGames = () => {
     );
   };
 };
+
+export const actionChangeThemeId = (themeId) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.CHANGE_THEME_ID,
+      payload: themeId,
+    });
+  };
+};

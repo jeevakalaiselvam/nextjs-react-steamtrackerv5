@@ -1,3 +1,6 @@
+import GamesContent from "@/components/pages/content/GamesContent";
+import GamesHeader from "@/components/pages/header/GamesHeader";
+import GamesLeft from "@/components/pages/left/GamesLeft";
 import Page from "@/components/pages/Page";
 import { useRouter } from "next/router";
 import React from "react";
@@ -9,12 +12,5 @@ export default function GamesPage() {
   const steamtracker = useSelector((state) => state.steamtracker);
   const { games } = steamtracker;
 
-  return (
-    <Page
-      left={<div>Games Left</div>}
-      header={<div>Games Header</div>}
-      content={<div>Games Content</div>}
-      right={<div>Games Right</div>}
-    />
-  );
+  return <Page left={<GamesLeft />} content={<GamesContent />} />;
 }
