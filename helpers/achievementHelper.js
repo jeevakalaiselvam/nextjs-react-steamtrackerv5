@@ -73,6 +73,9 @@ export const filteredAchievementsForSortOption = (achievements, sortOption) => {
       break;
     case GAME_BACKLOG_SORT_UNLOCKED:
       filteredAchievements = achievements.filter((ach) => ach.achieved == 1);
+      filteredAchievements = filteredAchievements.sort(
+        (ach1, ach2) => ach2.unlocktime - ach1.unlocktime
+      );
       break;
     default:
       filteredAchievements = achievements;

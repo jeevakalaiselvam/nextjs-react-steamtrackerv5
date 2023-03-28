@@ -5,13 +5,14 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  width: 380px;
+  width: 390px;
   align-items: flex-start;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.2);
   margin-right: 1rem;
   margin-top: 1rem;
   padding: 1rem;
+  opacity: ${(props) => (props.achieved ? "0.15" : "1")};
 `;
 
 const IconContainer = styled.div`
@@ -79,7 +80,7 @@ export default function AchievementCard({ achievement, gameId }) {
   } = achievement;
 
   return (
-    <Container>
+    <Container achieved={achieved}>
       <IconContainer>
         <Icon src={icon} />
       </IconContainer>

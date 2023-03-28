@@ -1,7 +1,14 @@
 import AchievementCard from "@/components/atoms/AchievementCard";
 import { filteredAchievementsForSortOption } from "@/helpers/achievementHelper";
-import { GAME_BACKLOG_SORT_ALL } from "@/helpers/constantHelper";
-import { actionSetHiddenDescriptionForGame } from "@/store/actions/games.actions";
+import {
+  GAME_BACKLOG_SORT_ALL,
+  GAME_BACKLOG_SORT_LOCKED,
+  GAME_BACKLOG_SORT_UNLOCKED,
+} from "@/helpers/constantHelper";
+import {
+  actionChangeGameBacklogSort,
+  actionSetHiddenDescriptionForGame,
+} from "@/store/actions/games.actions";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -36,6 +43,15 @@ const PhaseContainer = styled.div`
 `;
 
 const BacklogHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+`;
+
+const BacklogContent = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -78,7 +94,7 @@ export default function GameContent() {
       gameBacklogSort ?? GAME_BACKLOG_SORT_ALL
     );
     return filtered;
-  }, [achievements]);
+  }, [achievements, gameBacklogSort]);
 
   useEffect(() => {
     const getHidden = async () => {
@@ -91,10 +107,35 @@ export default function GameContent() {
     }
   }, [id]);
 
+  const backLogTitleMap = {
+    GAME_BACKLOG_SORT_ALL: "Backlog - All Achievements",
+    GAME_BACKLOG_SORT_LOCKED: "Backlog - All Locked",
+    GAME_BACKLOG_SORT_UNLOCKED: "Backlog - All Unlocked",
+  };
+
+  const backlogSortChangeHandler = () => {
+    if ((gameBacklogSort ?? GAME_BACKLOG_SORT_ALL) == GAME_BACKLOG_SORT_ALL) {
+      dispatch(actionChangeGameBacklogSort(GAME_BACKLOG_SORT_LOCKED));
+    }
+    if (
+      (gameBacklogSort ?? GAME_BACKLOG_SORT_ALL) == GAME_BACKLOG_SORT_LOCKED
+    ) {
+      dispatch(actionChangeGameBacklogSort(GAME_BACKLOG_SORT_UNLOCKED));
+    }
+    if (
+      (gameBacklogSort ?? GAME_BACKLOG_SORT_ALL) == GAME_BACKLOG_SORT_UNLOCKED
+    ) {
+      dispatch(actionChangeGameBacklogSort(GAME_BACKLOG_SORT_ALL));
+    }
+  };
+
   return (
     <Container>
       <BacklogContainer>
-        <BacklogHeader>
+        <BacklogHeader onClick={backlogSortChangeHandler}>
+          {backLogTitleMap[gameBacklogSort ?? GAME_BACKLOG_SORT_ALL]}
+        </BacklogHeader>
+        <BacklogContent>
           {filteredAchievements.map((achievement) => {
             return (
               <AchievementCard
@@ -104,11 +145,9 @@ export default function GameContent() {
               />
             );
           })}
-        </BacklogHeader>
+        </BacklogContent>
       </BacklogContainer>
-      <PhaseContainer>
-        <PhaseHeader></PhaseHeader>
-      </PhaseContainer>
+      <PhaseContainer></PhaseContainer>
     </Container>
   );
 }
