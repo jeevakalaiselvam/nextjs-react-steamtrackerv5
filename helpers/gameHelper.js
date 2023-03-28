@@ -9,46 +9,71 @@ import {
 } from "./constantHelper";
 
 export const filterGamesForCategory = (games, categoryId) => {
-  let filteredGames = [];
+  let filteredGamesForCategory = [];
+  let gamesCountForCategory = 0;
 
   switch (categoryId) {
     case GAME_CATEGORY_BACKLOG:
-      filteredGames = games.filter(
-        (game) => game.completion > 0 && game.completion < 10
-      );
+      filteredGamesForCategory = games.filter((game) => {
+        if (game.completion > 0 && game.completion < 10) {
+          gamesCountForCategory++;
+          return true;
+        }
+      });
       break;
     case GAME_CATEGORY_MARVEL:
-      filteredGames = games.filter((game) => game.completion == 100);
+      filteredGamesForCategory = games.filter((game) => {
+        if (game.completion == 100) {
+          gamesCountForCategory++;
+          return true;
+        }
+      });
       break;
     case GAME_CATEGORY_LEGENDARY:
-      filteredGames = games.filter(
-        (game) => game.completion >= 90 && game.completion < 100
-      );
+      filteredGamesForCategory = games.filter((game) => {
+        if (game.completion >= 90 && game.completion < 100) {
+          gamesCountForCategory++;
+          return true;
+        }
+      });
       break;
     case GAME_CATEGORY_EPIC:
-      filteredGames = games.filter(
-        (game) => game.completion >= 75 && game.completion < 90
-      );
+      filteredGamesForCategory = games.filter((game) => {
+        if (game.completion >= 75 && game.completion < 90) {
+          gamesCountForCategory++;
+          return true;
+        }
+      });
       break;
     case GAME_CATEGORY_RARE:
-      filteredGames = games.filter(
-        (game) => game.completion >= 50 && game.completion < 75
-      );
+      filteredGamesForCategory = games.filter((game) => {
+        if (game.completion >= 50 && game.completion < 75) {
+          gamesCountForCategory++;
+          return true;
+        }
+      });
       break;
     case GAME_CATEGORY_COMMON:
-      filteredGames = games.filter(
-        (game) => game.completion >= 25 && game.completion < 50
-      );
+      filteredGamesForCategory = games.filter((game) => {
+        if (game.completion >= 25 && game.completion < 50) {
+          gamesCountForCategory++;
+          return true;
+        }
+      });
       break;
     case GAME_CATEGORY_BRONZE:
-      filteredGames = games.filter(
-        (game) => game.completion >= 10 && game.completion < 25
-      );
+      filteredGamesForCategory = games.filter((game) => {
+        if (game.completion >= 10 && game.completion < 25) {
+          gamesCountForCategory++;
+          return true;
+        }
+      });
       break;
     default:
-      filteredGames = games;
+      gamesCountForCategory++;
+      filteredGamesForCategory = games;
       break;
   }
 
-  return filteredGames;
+  return { filteredGamesForCategory, gamesCountForCategory };
 };

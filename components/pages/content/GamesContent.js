@@ -150,7 +150,8 @@ export default function GamesContent() {
     <Container>
       {gameListCategories.map((category) => {
         const { id, color, title } = category;
-        const filteredGames = filterGamesForCategory(games, id);
+        const { filteredGamesForCategory, gamesCountForCategory } =
+          filterGamesForCategory(games, id);
         console.log(category.id);
         return (
           <GamesList key={id}>
@@ -158,17 +159,21 @@ export default function GamesContent() {
               <HeaderData complete={true}>{title}</HeaderData>
               <HeaderIcon>
                 {getIcon("trophy")}
-                <span style={{ marginLeft: "0.5rem" }}>{0}</span>
+                <span style={{ marginLeft: "0.5rem" }}>
+                  {gamesCountForCategory}
+                </span>
               </HeaderIcon>
             </HeaderContainer>
             <GameList>
-              {filteredGames.length > 0 &&
-                filteredGames.map((game) => {
+              {filteredGamesForCategory.length > 0 &&
+                filteredGamesForCategory.map((game) => {
                   return (
                     <GameCard game={game} height={GAME_HEIGHT} key={game.id} />
                   );
                 })}
-              {filteredGames.length == 0 && <NoGames>No Games</NoGames>}
+              {filteredGamesForCategory.length == 0 && (
+                <NoGames>No Games</NoGames>
+              )}
             </GameList>
           </GamesList>
         );
