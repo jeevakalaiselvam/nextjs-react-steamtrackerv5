@@ -79,7 +79,7 @@ const ImageOverlay = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   z-index: 2;
-  filter: blur(20px);
+  filter: blur(25px);
 `;
 
 export default function Page({
