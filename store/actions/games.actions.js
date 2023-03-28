@@ -19,11 +19,38 @@ export const actionFetchAllGames = () => {
   };
 };
 
+export const actionSetHiddenDescriptionForGame = (gameId, achievements) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.SET_HIDDEN_DESC_GAME,
+      payload: { gameId, achievements },
+    });
+  };
+};
+
+export const actionChangeGameBacklogSort = (sortOption) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.GAME_BACKLOG_SORT_CHANGE,
+      payload: sortOption,
+    });
+  };
+};
+
 export const actionChangeThemeId = (themeId) => {
   return (dispatch) => {
     return dispatch({
       type: TYPES.CHANGE_THEME_ID,
       payload: themeId,
+    });
+  };
+};
+
+export const actionSetSelectedGame = (gameId) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.SET_SELECTED_GAME,
+      payload: gameId,
     });
   };
 };

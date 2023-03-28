@@ -1,5 +1,5 @@
 import { AiFillGold } from "react-icons/ai";
-import { FaHourglass, FaMedal, FaTrophy } from "react-icons/fa";
+import { FaCheck, FaHourglass, FaMedal, FaTrophy } from "react-icons/fa";
 import { BsTrophyFill } from "react-icons/bs";
 import {
   HiColorSwatch,
@@ -21,6 +21,8 @@ export const getIcon = (type, color) => {
       return <FaHourglass style={{ fontSize: "1.4rem" }} />;
     case "achievement":
       return <HiFolderAdd />;
+    case "completed":
+      return <FaCheck />;
     default:
       return <AiFillGold />;
   }

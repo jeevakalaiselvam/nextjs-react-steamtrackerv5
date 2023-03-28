@@ -1,4 +1,19 @@
 import {
+  BACKLOG,
+  BRONZE,
+  BRONZE_COLOR,
+  COMMON,
+  COMMON_COLOR,
+  EPIC,
+  EPIC_COLOR,
+  LEGENDARY,
+  LEGENDARY_COLOR,
+  MARVEL,
+  MARVEL_COLOR,
+  RARE,
+  RARE_COLOR,
+} from "./colorHelper";
+import {
   GAME_CATEGORY_BACKLOG,
   GAME_CATEGORY_BRONZE,
   GAME_CATEGORY_COMMON,
@@ -13,7 +28,7 @@ export const filterGamesForCategory = (games, categoryId) => {
   let gamesCountForCategory = 0;
 
   switch (categoryId) {
-    case GAME_CATEGORY_BACKLOG:
+    case BACKLOG:
       filteredGamesForCategory = games.filter((game) => {
         if (game.completion > 0 && game.completion < 10) {
           gamesCountForCategory++;
@@ -21,7 +36,7 @@ export const filterGamesForCategory = (games, categoryId) => {
         }
       });
       break;
-    case GAME_CATEGORY_MARVEL:
+    case MARVEL:
       filteredGamesForCategory = games.filter((game) => {
         if (game.completion == 100) {
           gamesCountForCategory++;
@@ -29,7 +44,7 @@ export const filterGamesForCategory = (games, categoryId) => {
         }
       });
       break;
-    case GAME_CATEGORY_LEGENDARY:
+    case LEGENDARY:
       filteredGamesForCategory = games.filter((game) => {
         if (game.completion >= 90 && game.completion < 100) {
           gamesCountForCategory++;
@@ -37,7 +52,7 @@ export const filterGamesForCategory = (games, categoryId) => {
         }
       });
       break;
-    case GAME_CATEGORY_EPIC:
+    case EPIC:
       filteredGamesForCategory = games.filter((game) => {
         if (game.completion >= 75 && game.completion < 90) {
           gamesCountForCategory++;
@@ -45,7 +60,7 @@ export const filterGamesForCategory = (games, categoryId) => {
         }
       });
       break;
-    case GAME_CATEGORY_RARE:
+    case RARE:
       filteredGamesForCategory = games.filter((game) => {
         if (game.completion >= 50 && game.completion < 75) {
           gamesCountForCategory++;
@@ -53,7 +68,7 @@ export const filterGamesForCategory = (games, categoryId) => {
         }
       });
       break;
-    case GAME_CATEGORY_COMMON:
+    case COMMON:
       filteredGamesForCategory = games.filter((game) => {
         if (game.completion >= 25 && game.completion < 50) {
           gamesCountForCategory++;
@@ -61,7 +76,7 @@ export const filterGamesForCategory = (games, categoryId) => {
         }
       });
       break;
-    case GAME_CATEGORY_BRONZE:
+    case BRONZE:
       filteredGamesForCategory = games.filter((game) => {
         if (game.completion >= 10 && game.completion < 25) {
           gamesCountForCategory++;
@@ -75,5 +90,62 @@ export const filterGamesForCategory = (games, categoryId) => {
       break;
   }
 
-  return { filteredGamesForCategory, gamesCountForCategory };
+  const gamesSortedByLastPlayed = filteredGamesForCategory.sort(
+    (game1, game2) => game2.lastPlayed - game1.lastPlayed
+  );
+
+  return {
+    filteredGamesForCategory: gamesSortedByLastPlayed,
+    gamesCountForCategory,
+  };
+};
+
+export const calculaNextStageForGame = (game) => {
+  let nextStage = {
+    NEXT: 0,
+    BRONZE: 0,
+    COMMON: 0,
+    RARE: 0,
+    EPIC: 0,
+    LEGENDARY: 0,
+    MARVEL: 0,
+    NEXTCOLOR: "",
+  };
+
+  let completion = +game.completion;
+
+  nextStage.MARVEL = Math.ceil(game.total * 1.0) - game.completed;
+  nextStage.LEGENDARY = Math.ceil(game.total * 0.9) - game.completed;
+  nextStage.EPIC = Math.ceil(game.total * 0.75) - game.completed;
+  nextStage.RARE = Math.ceil(game.total * 0.5) - game.completed;
+  nextStage.COMMON = Math.ceil(game.total * 0.25) - game.completed;
+  nextStage.BRONZE = Math.ceil(game.total * 0.1) - game.completed;
+
+  if (completion == 100) {
+    nextStage.NEXT = 0;
+    nextStage.NEXTCOLOR = MARVEL_COLOR;
+  } else if (completion >= 90 && completion < 100) {
+    nextStage.NEXT = Math.ceil(game.total * 1.0) - game.completed;
+    nextStage.NEXTCOLOR = MARVEL_COLOR;
+  } else if (completion >= 75 && completion < 90) {
+    nextStage.NEXT = Math.ceil(game.total * 0.9) - game.completed;
+    nextStage.NEXTCOLOR = LEGENDARY_COLOR;
+  } else if (completion >= 50 && completion < 75) {
+    nextStage.NEXT = Math.ceil(game.total * 0.75) - game.completed;
+    nextStage.NEXTCOLOR = EPIC_COLOR;
+  } else if (completion >= 25 && completion < 50) {
+    nextStage.NEXT = Math.ceil(game.total * 0.5) - game.completed;
+    nextStage.NEXTCOLOR = RARE_COLOR;
+  } else if (completion >= 10 && completion < 25) {
+    nextStage.NEXT = Math.ceil(game.total * 0.25) - game.completed;
+    nextStage.NEXTCOLOR = COMMON_COLOR;
+  } else if (completion >= 1 && completion < 10) {
+    nextStage.NEXT = Math.ceil(game.total * 0.1) - game.completed;
+    nextStage.NEXTCOLOR = BRONZE_COLOR;
+  } else {
+    nextStage.NEXT = Math.ceil(game.total * 0.01) - game.completed;
+    nextStage.NEXTCOLOR = NORMAL_COLOR;
+  }
+
+  return nextStage;
 };

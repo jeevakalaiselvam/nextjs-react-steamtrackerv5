@@ -4,6 +4,7 @@ export const EPIC = "EPIC";
 export const RARE = "RARE";
 export const COMMON = "COMMON";
 export const BRONZE = "BRONZE";
+export const BACKLOG = "BACKLOG";
 
 export const MARVEL_COLOR = "#eb4b4b";
 export const LEGENDARY_COLOR = "#FFCC00";

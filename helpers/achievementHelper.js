@@ -1,3 +1,10 @@
+import {
+  GAME_BACKLOG_SORT_ALL,
+  GAME_BACKLOG_SORT_LOCKED,
+  GAME_BACKLOG_SORT_PINNED,
+  GAME_BACKLOG_SORT_UNLOCKED,
+} from "./constantHelper";
+
 const MONTH = "MONTH";
 const WEEK = "WEEK";
 const TODAY = "TODAY";
@@ -53,4 +60,23 @@ export const getaUnlockedAchievementsByType = (achievements, type) => {
   }
 
   return newAchievements;
+};
+
+export const filteredAchievementsForSortOption = (achievements, sortOption) => {
+  let filteredAchievements = [];
+  switch (sortOption) {
+    case GAME_BACKLOG_SORT_ALL:
+      filteredAchievements = achievements;
+      break;
+    case GAME_BACKLOG_SORT_LOCKED:
+      filteredAchievements = achievements.filter((ach) => ach.achieved != 1);
+      break;
+    case GAME_BACKLOG_SORT_UNLOCKED:
+      filteredAchievements = achievements.filter((ach) => ach.achieved == 1);
+      break;
+    default:
+      filteredAchievements = achievements;
+      break;
+  }
+  return filteredAchievements;
 };

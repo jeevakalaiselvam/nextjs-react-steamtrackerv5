@@ -1,29 +1,21 @@
 import GameCard from "@/components/atoms/GameCard";
 import {
+  BACKLOG,
+  BRONZE,
   BRONZE_COLOR,
+  COMMON,
   COMMON_COLOR,
+  EPIC,
   EPIC_COLOR,
+  LEGENDARY,
   LEGENDARY_COLOR,
+  MARVEL,
   MARVEL_COLOR,
   NORMAL_COLOR,
+  RARE,
   RARE_COLOR,
 } from "@/helpers/colorHelper";
-import {
-  GAME_CATEGORY_BACKLOG,
-  GAME_CATEGORY_BRONZE,
-  GAME_CATEGORY_COMMON,
-  GAME_CATEGORY_EPIC,
-  GAME_CATEGORY_LEGENDARY,
-  GAME_CATEGORY_MARVEL,
-  GAME_CATEGORY_RARE,
-  GAME_CATEGORY_BACKLOG_TITLE,
-  GAME_CATEGORY_BRONZE_TITLE,
-  GAME_CATEGORY_COMMON_TITLE,
-  GAME_CATEGORY_EPIC_TITLE,
-  GAME_CATEGORY_LEGENDARY_TITLE,
-  GAME_CATEGORY_MARVEL_TITLE,
-  GAME_CATEGORY_RARE_TITLE,
-} from "@/helpers/constantHelper";
+
 import { filterGamesForCategory } from "@/helpers/gameHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import { useRouter } from "next/router";
@@ -110,39 +102,39 @@ export default function GamesContent() {
 
   const gameListCategories = [
     {
-      id: GAME_CATEGORY_BACKLOG,
+      id: BACKLOG,
       color: NORMAL_COLOR,
-      title: GAME_CATEGORY_BACKLOG_TITLE,
+      title: BACKLOG,
     },
     {
-      id: GAME_CATEGORY_MARVEL,
+      id: MARVEL,
       color: MARVEL_COLOR,
-      title: GAME_CATEGORY_MARVEL_TITLE,
+      title: MARVEL,
     },
     {
-      id: GAME_CATEGORY_LEGENDARY,
+      id: LEGENDARY,
       color: LEGENDARY_COLOR,
-      title: GAME_CATEGORY_LEGENDARY_TITLE,
+      title: LEGENDARY,
     },
     {
-      id: GAME_CATEGORY_EPIC,
+      id: EPIC,
       color: EPIC_COLOR,
-      title: GAME_CATEGORY_EPIC_TITLE,
+      title: EPIC,
     },
     {
-      id: GAME_CATEGORY_RARE,
+      id: RARE,
       color: RARE_COLOR,
-      title: GAME_CATEGORY_RARE_TITLE,
+      title: RARE,
     },
     {
-      id: GAME_CATEGORY_COMMON,
+      id: COMMON,
       color: COMMON_COLOR,
-      title: GAME_CATEGORY_COMMON_TITLE,
+      title: COMMON,
     },
     {
-      id: GAME_CATEGORY_BRONZE,
+      id: BRONZE,
       color: BRONZE_COLOR,
-      title: GAME_CATEGORY_BRONZE_TITLE,
+      title: BRONZE,
     },
   ];
 

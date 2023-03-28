@@ -1,5 +1,8 @@
 import { HEADER_IMAGE } from "@/helpers/urlHelper";
+import { actionSetSelectedGame } from "@/store/actions/games.actions";
+import { useRouter } from "next/router";
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -53,8 +56,21 @@ export default function GameCard({ game, height }) {
     completed,
     lastPlayed,
   } = game;
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const gameCardClickHandler = () => {
+    dispatch(actionSetSelectedGame(id));
+    router.push(`/games/${id}`);
+  };
+
   return (
-    <Container url={HEADER_IMAGE(id)} height={height}>
+    <Container
+      url={HEADER_IMAGE(id)}
+      height={height}
+      onClick={gameCardClickHandler}
+    >
       <Overlay height={height} />
       <Title>{name}</Title>
     </Container>

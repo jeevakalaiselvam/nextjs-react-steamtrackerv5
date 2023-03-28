@@ -14,6 +14,7 @@ const Container = styled.div`
   min-height: 100vh;
   max-height: 100vh;
   overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
 export default function GamesLeftSidebar() {
