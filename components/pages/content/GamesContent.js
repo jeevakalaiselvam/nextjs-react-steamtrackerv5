@@ -163,9 +163,6 @@ export default function GamesContent() {
                     <GameCard game={game} height={GAME_HEIGHT} key={game.id} />
                   );
                 })}
-              {filteredGamesForCategory.length == 0 && (
-                <NoGames>No Games</NoGames>
-              )}
             </GameList>
           </GamesList>
         );
