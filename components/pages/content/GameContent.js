@@ -94,6 +94,7 @@ const InnerList = styled.div`
   align-items: flex-start;
   flex-wrap: wrap;
   justify-content: center;
+  padding-bottom: 2rem;
 `;
 
 const Title = styled.div`
