@@ -1,4 +1,5 @@
 import GameCard from "@/components/atoms/GameCard";
+import TrophyFancy from "@/components/atoms/TrophyFancy";
 import {
   BACKLOG,
   BRONZE,
@@ -59,7 +60,6 @@ const HeaderIcon = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
   z-index: 8;
   justify-content: center;
 `;
@@ -68,6 +68,7 @@ const HeaderData = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 0.5rem;
   z-index: 8;
   font-size: ${(props) => (props.complete ? "1.5rem" : "2rem")};
 `;
@@ -83,13 +84,31 @@ const GameList = styled.div`
   min-height: 95vh;
 `;
 
-const NoGames = styled.div`
+const TrophyObtained = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  min-height: ${(props) => (props.height ? `${props.height}px` : `150px`)};
+  flex: 1;
+`;
+
+const TrophyIcon = styled.div`
+  display: flex;
+  padding: 0.25rem;
+  align-items: center;
+  font-size: ${(props) => props.size ?? "2rem"};
+  justify-content: center;
+  color: ${(props) => props.color ?? ""};
+  transform: translateY(${(props) => props.transformY ?? "0px"});
+`;
+
+const TrophyTitle = styled.div`
+  display: flex;
+  padding: 0.25rem;
+  align-items: center;
+  margin: 0 0.5rem;
+  font-size: 1.5rem;
+  justify-content: center;
+  color: ${(props) => props.color ?? ""};
 `;
 
 export default function GamesContent() {
@@ -144,17 +163,17 @@ export default function GamesContent() {
         const { id, color, title } = category;
         const { filteredGamesForCategory, gamesCountForCategory } =
           filterGamesForCategory(games, id);
-        console.log(category.id);
         return (
           <GamesList key={id}>
             <HeaderContainer iconColor={color}>
-              <HeaderData complete={true}>{title}</HeaderData>
               <HeaderIcon>
-                {getIcon("trophy")}
+                <TrophyFancy color={color} title={id} />
+              </HeaderIcon>
+              <HeaderData complete={true}>
                 <span style={{ marginLeft: "0.5rem" }}>
                   {gamesCountForCategory}
                 </span>
-              </HeaderIcon>
+              </HeaderData>
             </HeaderContainer>
             <GameList>
               {filteredGamesForCategory.length > 0 &&
