@@ -19,7 +19,7 @@ export default function GamesPage() {
       content={<GameContent />}
       header={<GameHeader />}
       right={<GameRight />}
-      rightWidth={"300px"}
+      rightWidth={"375px"}
     />
   );
 }

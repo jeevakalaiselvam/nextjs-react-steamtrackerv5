@@ -18,12 +18,15 @@ import {
   GAME_BACKLOG_SORT_LOCKED,
   GAME_BACKLOG_SORT_PINNED,
   GAME_BACKLOG_SORT_UNLOCKED,
+  GAME_UNLOCK_TYPE_MONTH,
+  GAME_UNLOCK_TYPE_TODAY,
+  GAME_UNLOCK_TYPE_WEEK,
 } from "./constantHelper";
 
-const MONTH = "MONTH";
-const WEEK = "WEEK";
-const TODAY = "TODAY";
-const ALL = "ALL";
+export const MONTH = "MONTH";
+export const WEEK = "WEEK";
+export const TODAY = "TODAY";
+export const ALL = "ALL";
 
 const MARVEL_LOWER = 0;
 const MARVEL_HIGHER = 3;
@@ -90,7 +93,7 @@ export const getColorForPercentage = (percentage) => {
 export const getaUnlockedAchievementsByType = (achievements, type) => {
   let newAchievements = [];
   if (achievements) {
-    if (type == TODAY) {
+    if (type == GAME_UNLOCK_TYPE_TODAY) {
       let date = new Date();
       date.setHours(0, 0, 0, 0);
       date.setDate(date.getDate());
@@ -103,7 +106,7 @@ export const getaUnlockedAchievementsByType = (achievements, type) => {
       );
     }
 
-    if (type == WEEK) {
+    if (type == GAME_UNLOCK_TYPE_WEEK) {
       let date = new Date();
       date.setHours(0, 0, 0, 0);
       date.setDate(date.getDate() - 7);
@@ -116,7 +119,7 @@ export const getaUnlockedAchievementsByType = (achievements, type) => {
       );
     }
 
-    if (type == MONTH) {
+    if (type == GAME_UNLOCK_TYPE_MONTH) {
       let date = new Date();
       date.setHours(0, 0, 0, 0);
       date.setDate(date.getDate() - 7);

@@ -110,6 +110,8 @@ export const calculaNextStageForGame = (game) => {
     LEGENDARY: 0,
     MARVEL: 0,
     NEXTCOLOR: "",
+    OBTAINED: "",
+    OBTAINEDCOLOR: "",
   };
 
   let completion = +game.completion;
@@ -124,27 +126,43 @@ export const calculaNextStageForGame = (game) => {
   if (completion == 100) {
     nextStage.NEXT = 0;
     nextStage.NEXTCOLOR = MARVEL_COLOR;
+    nextStage.OBTAINED = MARVEL;
+    nextStage.OBTAINEDCOLOR = MARVEL_COLOR;
   } else if (completion >= 90 && completion < 100) {
     nextStage.NEXT = Math.ceil(game.total * 1.0) - game.completed;
     nextStage.NEXTCOLOR = MARVEL_COLOR;
+    nextStage.OBTAINED = LEGENDARY;
+    nextStage.OBTAINEDCOLOR = LEGENDARY_COLOR;
   } else if (completion >= 75 && completion < 90) {
     nextStage.NEXT = Math.ceil(game.total * 0.9) - game.completed;
     nextStage.NEXTCOLOR = LEGENDARY_COLOR;
+    nextStage.OBTAINED = EPIC;
+    nextStage.OBTAINEDCOLOR = EPIC_COLOR;
   } else if (completion >= 50 && completion < 75) {
     nextStage.NEXT = Math.ceil(game.total * 0.75) - game.completed;
     nextStage.NEXTCOLOR = EPIC_COLOR;
+    nextStage.OBTAINED = RARE;
+    nextStage.OBTAINEDCOLOR = RARE_COLOR;
   } else if (completion >= 25 && completion < 50) {
     nextStage.NEXT = Math.ceil(game.total * 0.5) - game.completed;
     nextStage.NEXTCOLOR = RARE_COLOR;
+    nextStage.OBTAINED = COMMON;
+    nextStage.OBTAINEDCOLOR = COMMON_COLOR;
   } else if (completion >= 10 && completion < 25) {
     nextStage.NEXT = Math.ceil(game.total * 0.25) - game.completed;
     nextStage.NEXTCOLOR = COMMON_COLOR;
+    nextStage.OBTAINED = BRONZE;
+    nextStage.OBTAINEDCOLOR = BRONZE_COLOR;
   } else if (completion >= 1 && completion < 10) {
     nextStage.NEXT = Math.ceil(game.total * 0.1) - game.completed;
     nextStage.NEXTCOLOR = BRONZE_COLOR;
+    nextStage.OBTAINED = NORMAL;
+    nextStage.OBTAINEDCOLOR = NORMAL_COLOR;
   } else {
     nextStage.NEXT = Math.ceil(game.total * 0.01) - game.completed;
     nextStage.NEXTCOLOR = NORMAL_COLOR;
+    nextStage.OBTAINED = NORMAL;
+    nextStage.OBTAINEDCOLOR = NORMAL_COLOR;
   }
 
   return nextStage;

@@ -10,12 +10,11 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  width: 390px;
+  width: ${(props) => props.width ?? "375px"};
   align-items: flex-start;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.2);
-  margin-right: 1rem;
-  margin-top: 1rem;
+  margin: ${(props) => props.margin ?? "1rem 1rem 0rem 0rem"};
   border-radius: 4px;
   padding: 1rem;
   align-self: stretch;
@@ -98,7 +97,13 @@ const XPData = styled.div`
   justify-content: center;
 `;
 
-export default function AchievementCard({ achievement, gameId }) {
+export default function AchievementCard({
+  achievement,
+  gameId,
+  disableOpacity,
+  margin,
+  width,
+}) {
   const router = useRouter();
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
@@ -117,7 +122,11 @@ export default function AchievementCard({ achievement, gameId }) {
   } = achievement;
 
   return (
-    <Container achieved={achieved}>
+    <Container
+      achieved={!disableOpacity && achieved}
+      margin={margin}
+      width={width}
+    >
       <IconContainer>
         <Icon src={icon} />
       </IconContainer>

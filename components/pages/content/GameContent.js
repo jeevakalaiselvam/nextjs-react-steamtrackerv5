@@ -102,6 +102,11 @@ const Title = styled.div`
   align-items: center;
   flex: 1;
   justify-content: flex-start;
+
+  &:hover {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+  }
 `;
 
 const AchievementFilter = styled.div`

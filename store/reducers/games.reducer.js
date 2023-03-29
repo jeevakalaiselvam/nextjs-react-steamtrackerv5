@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     selectedGame: "",
     gameBacklogSort: "",
     gameBacklogFilter: "",
+    gameUnlockType: "",
   },
 };
 
@@ -21,6 +22,15 @@ const reducer = (state = INITIAL_STATE, action) => {
         hiddenDescriptions: {
           ...(state?.hiddenDescriptions ?? {}),
           [payload.gameId]: payload.achievements,
+        },
+      };
+
+    case TYPES.GAME_UNLOCKED_TYPE_CHANGE:
+      return {
+        ...state,
+        preferences: {
+          ...(state?.preferences ?? {}),
+          gameUnlockType: payload,
         },
       };
 

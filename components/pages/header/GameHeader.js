@@ -41,10 +41,25 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const TrophyToGet = styled.div`
+const LeftEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+`;
+
+const TrophyObtained = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
+`;
+
+const TrophyToGet = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
 `;
 
 const TrophyStatus = styled.div`
@@ -59,7 +74,18 @@ const TrophyIcon = styled.div`
   display: flex;
   padding: 0.25rem;
   align-items: center;
-  font-size: 2rem;
+  font-size: ${(props) => props.size ?? "2rem"};
+  justify-content: center;
+  color: ${(props) => props.color ?? ""};
+  transform: translateY(${(props) => props.transformY ?? "0px"});
+`;
+
+const TrophyTitle = styled.div`
+  display: flex;
+  padding: 0.25rem;
+  align-items: center;
+  margin: 0 0.5rem;
+  font-size: 1.5rem;
   justify-content: center;
   color: ${(props) => props.color ?? ""};
 `;
@@ -129,6 +155,46 @@ export default function GameHeader() {
 
   return (
     <Container>
+      <LeftEmpty></LeftEmpty>
+      <TrophyObtained>
+        <TrophyIcon
+          color={nextStage.OBTAINEDCOLOR}
+          size={"1rem"}
+          transformY={"1rem"}
+        >
+          {getIcon("trophy")}
+        </TrophyIcon>
+        <TrophyIcon
+          color={nextStage.OBTAINEDCOLOR}
+          size={"1.5rem"}
+          transformY={"0.5rem"}
+        >
+          {getIcon("trophy")}
+        </TrophyIcon>
+        <TrophyIcon color={nextStage.OBTAINEDCOLOR} size={"2rem"}>
+          {getIcon("trophy")}
+        </TrophyIcon>
+        <TrophyTitle color={nextStage.OBTAINEDCOLOR}>
+          {nextStage.OBTAINED}
+        </TrophyTitle>
+        <TrophyIcon color={nextStage.OBTAINEDCOLOR} size={"2rem"}>
+          {getIcon("trophy")}
+        </TrophyIcon>
+        <TrophyIcon
+          color={nextStage.OBTAINEDCOLOR}
+          size={"1.5rem"}
+          transformY={"0.5rem"}
+        >
+          {getIcon("trophy")}
+        </TrophyIcon>{" "}
+        <TrophyIcon
+          color={nextStage.OBTAINEDCOLOR}
+          size={"1rem"}
+          transformY={"1rem"}
+        >
+          {getIcon("trophy")}
+        </TrophyIcon>
+      </TrophyObtained>
       <TrophyToGet>
         {headerCategories.map((category) => {
           const { id, title, color } = category;

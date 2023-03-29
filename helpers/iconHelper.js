@@ -1,6 +1,7 @@
 import { AiFillGold } from "react-icons/ai";
 import { FaCheck, FaHourglass, FaMedal, FaTrophy } from "react-icons/fa";
 import { BsTrophyFill } from "react-icons/bs";
+import { TbAB, TbArrowsMaximize, TbDialpad, TbRefresh } from "react-icons/tb";
 import {
   HiColorSwatch,
   HiFolderAdd,
@@ -23,6 +24,8 @@ export const getIcon = (type, color) => {
       return <HiFolderAdd />;
     case "completed":
       return <FaCheck />;
+    case "refresh":
+      return <TbRefresh />;
     default:
       return <AiFillGold />;
   }

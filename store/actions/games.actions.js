@@ -28,6 +28,15 @@ export const actionSetHiddenDescriptionForGame = (gameId, achievements) => {
   };
 };
 
+export const actionUnlockedTypeChange = (unlockType) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.GAME_UNLOCKED_TYPE_CHANGE,
+      payload: unlockType,
+    });
+  };
+};
+
 export const actionChangeBacklogFilter = (sortOption) => {
   return (dispatch) => {
     return dispatch({
