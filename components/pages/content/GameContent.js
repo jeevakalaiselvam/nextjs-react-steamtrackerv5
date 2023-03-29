@@ -1,5 +1,8 @@
 import AchievementCard from "@/components/atoms/AchievementCard";
-import { filteredAchievementsForSortOption } from "@/helpers/achievementHelper";
+import {
+  filteredAchievementsForSortAndFilterOption,
+  getAchievementsForFilterType,
+} from "@/helpers/achievementHelper";
 import {
   ALL,
   BRONZE,
@@ -17,12 +20,20 @@ import {
   RARE_COLOR,
 } from "@/helpers/colorHelper";
 import {
+  GAME_BACKLOG_FILTER_ALL,
+  GAME_BACKLOG_FILTER_BRONZE,
+  GAME_BACKLOG_FILTER_COMMON,
+  GAME_BACKLOG_FILTER_EPIC,
+  GAME_BACKLOG_FILTER_LEGENDARY,
+  GAME_BACKLOG_FILTER_MARVEL,
+  GAME_BACKLOG_FILTER_RARE,
   GAME_BACKLOG_SORT_ALL,
   GAME_BACKLOG_SORT_LOCKED,
   GAME_BACKLOG_SORT_UNLOCKED,
 } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
+  actionChangeBacklogFilter,
   actionChangeGameBacklogSort,
   actionSetHiddenDescriptionForGame,
 } from "@/store/actions/games.actions";
@@ -78,6 +89,13 @@ const BacklogContent = styled.div`
   max-height: 90vh;
 `;
 
+const InnerList = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
 const Title = styled.div`
   display: flex;
   align-items: center;
@@ -85,14 +103,14 @@ const Title = styled.div`
   justify-content: flex-start;
 `;
 
-const TrophyFilter = styled.div`
+const AchievementFilter = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
   justify-content: flex-end;
 `;
 
-const TrophyStatus = styled.div`
+const AchievementStatus = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -100,7 +118,7 @@ const TrophyStatus = styled.div`
   justify-content: center;
 `;
 
-const TrophyIcon = styled.div`
+const AchievementIcon = styled.div`
   display: flex;
   padding: 0.25rem;
   align-items: center;
@@ -109,7 +127,7 @@ const TrophyIcon = styled.div`
   color: ${(props) => props.color ?? ""};
 `;
 
-const TrophyCount = styled.div`
+const AchievementCount = styled.div`
   display: flex;
   padding: 0.25rem;
   align-items: center;
@@ -118,12 +136,22 @@ const TrophyCount = styled.div`
   height: 20px;
 `;
 
+const AchievementSelected = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5px;
+  height: 5px;
+  border-radius: 1rem;
+  background-color: ${(props) => props.color ?? "#FEFEFE"};
+`;
+
 export default function GameContent() {
   const router = useRouter();
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
   const { games, preferences, hiddenDescriptions } = steamtracker;
-  const { selectedGame, gameBacklogSort } = preferences;
+  const { selectedGame, gameBacklogSort, gameBacklogFilter } = preferences;
 
   const game = games?.find((game) => game.id == selectedGame);
 
@@ -140,12 +168,13 @@ export default function GameContent() {
   } = game;
 
   const filteredAchievements = React.useMemo(() => {
-    const filtered = filteredAchievementsForSortOption(
+    const filtered = filteredAchievementsForSortAndFilterOption(
       achievements,
-      gameBacklogSort ?? GAME_BACKLOG_SORT_ALL
+      gameBacklogSort ?? GAME_BACKLOG_SORT_ALL,
+      gameBacklogFilter ?? GAME_BACKLOG_FILTER_ALL
     );
     return filtered;
-  }, [achievements, gameBacklogSort]);
+  }, [achievements, gameBacklogSort, gameBacklogFilter]);
 
   useEffect(() => {
     const getHidden = async () => {
@@ -182,41 +211,45 @@ export default function GameContent() {
 
   const headerCategories = [
     {
-      id: ALL,
+      type: GAME_BACKLOG_FILTER_ALL,
       color: NORMAL_COLOR,
       title: ALL,
     },
     {
-      id: BRONZE,
+      type: GAME_BACKLOG_FILTER_BRONZE,
       color: BRONZE_COLOR,
       title: BRONZE,
     },
     {
-      id: COMMON,
+      type: GAME_BACKLOG_FILTER_COMMON,
       color: COMMON_COLOR,
       title: COMMON,
     },
     {
-      id: RARE,
+      type: GAME_BACKLOG_FILTER_RARE,
       color: RARE_COLOR,
       title: RARE,
     },
     {
-      id: EPIC,
+      type: GAME_BACKLOG_FILTER_EPIC,
       color: EPIC_COLOR,
       title: EPIC,
     },
     {
-      id: LEGENDARY,
+      type: GAME_BACKLOG_FILTER_LEGENDARY,
       color: LEGENDARY_COLOR,
       title: LEGENDARY,
     },
     {
-      id: MARVEL,
+      type: GAME_BACKLOG_FILTER_MARVEL,
       color: MARVEL_COLOR,
       title: MARVEL,
     },
   ];
+
+  const achievementTypeFilterClicked = (type) => {
+    dispatch(actionChangeBacklogFilter(type));
+  };
 
   return (
     <Container>
@@ -225,30 +258,51 @@ export default function GameContent() {
           <Title onClick={backlogSortChangeHandler}>
             {backLogTitleMap[gameBacklogSort ?? GAME_BACKLOG_SORT_ALL]}
           </Title>
-          <TrophyFilter>
+          <AchievementFilter>
             {headerCategories.map((category) => {
-              const { id, title, color } = category;
+              const { type, title, color } = category;
               return (
-                <TrophyStatus color={color}>
-                  <TrophyIcon color={color}>
+                <AchievementStatus
+                  color={color}
+                  onClick={() => {
+                    achievementTypeFilterClicked(type);
+                  }}
+                >
+                  <AchievementSelected
+                    color={gameBacklogFilter == type ? color : "#00000000"}
+                  ></AchievementSelected>
+                  <AchievementIcon color={color}>
                     {getIcon("achievement")}
-                  </TrophyIcon>
-                  <TrophyCount color={color}>{0}</TrophyCount>
-                </TrophyStatus>
+                  </AchievementIcon>
+                  <AchievementCount color={color}>
+                    {
+                      getAchievementsForFilterType(
+                        filteredAchievementsForSortAndFilterOption(
+                          achievements,
+                          gameBacklogSort,
+                          GAME_BACKLOG_FILTER_ALL
+                        ),
+                        type
+                      ).length
+                    }
+                  </AchievementCount>
+                </AchievementStatus>
               );
             })}
-          </TrophyFilter>
+          </AchievementFilter>
         </BacklogHeader>
         <BacklogContent>
-          {filteredAchievements.map((achievement) => {
-            return (
-              <AchievementCard
-                achievement={achievement}
-                key={achievement.name}
-                gameId={id}
-              />
-            );
-          })}
+          <InnerList>
+            {filteredAchievements.map((achievement) => {
+              return (
+                <AchievementCard
+                  achievement={achievement}
+                  key={achievement.name}
+                  gameId={id}
+                />
+              );
+            })}
+          </InnerList>
         </BacklogContent>
       </BacklogContainer>
       <PhaseContainer></PhaseContainer>

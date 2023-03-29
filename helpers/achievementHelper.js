@@ -7,6 +7,13 @@ import {
   RARE_COLOR,
 } from "./colorHelper";
 import {
+  GAME_BACKLOG_FILTER_ALL,
+  GAME_BACKLOG_FILTER_BRONZE,
+  GAME_BACKLOG_FILTER_COMMON,
+  GAME_BACKLOG_FILTER_EPIC,
+  GAME_BACKLOG_FILTER_LEGENDARY,
+  GAME_BACKLOG_FILTER_MARVEL,
+  GAME_BACKLOG_FILTER_RARE,
   GAME_BACKLOG_SORT_ALL,
   GAME_BACKLOG_SORT_LOCKED,
   GAME_BACKLOG_SORT_PINNED,
@@ -132,30 +139,112 @@ export const getaUnlockedAchievementsByType = (achievements, type) => {
   return newAchievements;
 };
 
-export const filteredAchievementsForSortOption = (achievements, sortOption) => {
-  let filteredAchievements = [];
-  switch (sortOption) {
+export const filteredAchievementsForSortAndFilterOption = (
+  achievements,
+  gameBacklogSort,
+  gameBacklogFilter
+) => {
+  let sortAchievements = [];
+  let filterAchievements = [];
+  let finalAchievements = [];
+
+  sortAchievements = getAchievementsForSortType(achievements, gameBacklogSort);
+  filterAchievements = getAchievementsForFilterType(
+    sortAchievements,
+    gameBacklogFilter
+  );
+  finalAchievements = filterAchievements;
+  return finalAchievements;
+};
+
+export const getAchievementsForSortType = (achievements, sortType) => {
+  let sortAchievements = [];
+
+  switch (sortType) {
     case GAME_BACKLOG_SORT_ALL:
-      filteredAchievements = achievements;
-      filteredAchievements = filteredAchievements.sort(
+      sortAchievements = achievements;
+      sortAchievements = sortAchievements.sort(
         (ach1, ach2) => ach2.percentage - ach1.percentage
       );
       break;
     case GAME_BACKLOG_SORT_LOCKED:
-      filteredAchievements = achievements.filter((ach) => ach.achieved != 1);
-      filteredAchievements = filteredAchievements.sort(
+      sortAchievements = achievements.filter((ach) => ach.achieved != 1);
+      sortAchievements = sortAchievements.sort(
         (ach1, ach2) => ach2.percentage - ach1.percentage
       );
       break;
     case GAME_BACKLOG_SORT_UNLOCKED:
-      filteredAchievements = achievements.filter((ach) => ach.achieved == 1);
-      filteredAchievements = filteredAchievements.sort(
+      sortAchievements = achievements.filter((ach) => ach.achieved == 1);
+      sortAchievements = sortAchievements.sort(
         (ach1, ach2) => ach2.unlocktime - ach1.unlocktime
       );
       break;
     default:
-      filteredAchievements = achievements;
+      sortAchievements = achievements;
       break;
   }
-  return filteredAchievements;
+
+  return sortAchievements;
+};
+
+export const getAchievementsForFilterType = (achievements, filterType) => {
+  let filterAchievements = [];
+
+  switch (filterType) {
+    case GAME_BACKLOG_FILTER_ALL:
+      filterAchievements = achievements;
+      break;
+    case GAME_BACKLOG_FILTER_BRONZE:
+      filterAchievements = achievements.filter((achievement) => {
+        return (
+          achievement.percentage <= BRONZE_HIGHER &&
+          achievement.percentage > BRONZE_LOWER
+        );
+      });
+      break;
+    case GAME_BACKLOG_FILTER_COMMON:
+      filterAchievements = achievements.filter((achievement) => {
+        return (
+          achievement.percentage <= COMMON_HIGHER &&
+          achievement.percentage > COMMON_LOWER
+        );
+      });
+      break;
+    case GAME_BACKLOG_FILTER_RARE:
+      filterAchievements = achievements.filter((achievement) => {
+        return (
+          achievement.percentage <= RARE_HIGHER &&
+          achievement.percentage > RARE_LOWER
+        );
+      });
+      break;
+    case GAME_BACKLOG_FILTER_EPIC:
+      filterAchievements = achievements.filter((achievement) => {
+        return (
+          achievement.percentage <= EPIC_HIGHER &&
+          achievement.percentage > EPIC_LOWER
+        );
+      });
+      break;
+    case GAME_BACKLOG_FILTER_LEGENDARY:
+      filterAchievements = achievements.filter((achievement) => {
+        return (
+          achievement.percentage <= LEGENDARY_HIGHER &&
+          achievement.percentage > LEGENDARY_LOWER
+        );
+      });
+      break;
+    case GAME_BACKLOG_FILTER_MARVEL:
+      filterAchievements = achievements.filter((achievement) => {
+        return (
+          achievement.percentage <= MARVEL_HIGHER &&
+          achievement.percentage > MARVEL_LOWER
+        );
+      });
+      break;
+    default:
+      filterAchievements = achievements;
+      break;
+  }
+  return filterAchievements;
 };
