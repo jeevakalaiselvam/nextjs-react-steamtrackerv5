@@ -1,3 +1,8 @@
+import {
+  getColorForPercentage,
+  getXPForPercentage,
+} from "@/helpers/achievementHelper";
+import { getIcon } from "@/helpers/iconHelper";
 import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,8 +16,16 @@ const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   margin-right: 1rem;
   margin-top: 1rem;
+  border-radius: 4px;
   padding: 1rem;
+  align-self: stretch;
   opacity: ${(props) => (props.achieved ? "0.15" : "1")};
+  position: relative;
+
+  &:hover {
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
 `;
 
 const IconContainer = styled.div`
@@ -48,17 +61,41 @@ const Title = styled.div`
   align-items: center;
   justify-content: flex-start;
   padding: 0rem 1rem 0.5rem 1rem;
-  flex: 1;
 `;
 
 const Description = styled.div`
   padding: 0.5rem 1rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   color: #b0bec5;
   opacity: 0.75;
   flex: 1;
+`;
+
+const XPContainer = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  color: ${(props) => props.color};
+`;
+
+const XPIcon = styled.div`
+  display: flex;
+  font-size: 1.75rem;
+  align-items: center;
+  justify-content: center;
+`;
+
+const XPData = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 0.25rem;
+  justify-content: center;
 `;
 
 export default function AchievementCard({ achievement, gameId }) {
@@ -92,6 +129,10 @@ export default function AchievementCard({ achievement, gameId }) {
             "HIDDEN"}
         </Description>
       </Data>
+      <XPContainer color={getColorForPercentage(percentage)}>
+        <XPData>{getXPForPercentage(percentage)}</XPData>
+        <XPIcon>{getIcon("achievement")}</XPIcon>
+      </XPContainer>
     </Container>
   );
 }

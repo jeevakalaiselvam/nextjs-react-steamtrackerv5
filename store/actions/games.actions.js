@@ -28,6 +28,15 @@ export const actionSetHiddenDescriptionForGame = (gameId, achievements) => {
   };
 };
 
+export const actionChangeBacklogFilter = (sortOption) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.GAME_BACKLOG_FILTER_CHANGE,
+      payload: sortOption,
+    });
+  };
+};
+
 export const actionChangeGameBacklogSort = (sortOption) => {
   return (dispatch) => {
     return dispatch({

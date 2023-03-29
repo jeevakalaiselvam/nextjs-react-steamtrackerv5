@@ -7,6 +7,7 @@ const INITIAL_STATE = {
     themeGameId: 1328670,
     selectedGame: "",
     gameBacklogSort: "",
+    gameBacklogFilter: "",
   },
 };
 
@@ -20,6 +21,15 @@ const reducer = (state = INITIAL_STATE, action) => {
         hiddenDescriptions: {
           ...(state?.hiddenDescriptions ?? {}),
           [payload.gameId]: payload.achievements,
+        },
+      };
+
+    case TYPES.GAME_BACKLOG_FILTER_CHANGE:
+      return {
+        ...state,
+        preferences: {
+          ...(state?.preferences ?? {}),
+          gameBacklogFilter: payload,
         },
       };
 

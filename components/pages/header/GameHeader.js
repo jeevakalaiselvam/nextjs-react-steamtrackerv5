@@ -37,7 +37,7 @@ const Container = styled.div`
   display: flex;
   padding: 1rem;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 `;
 
