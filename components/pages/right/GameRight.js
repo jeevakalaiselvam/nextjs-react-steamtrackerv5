@@ -6,6 +6,7 @@ import {
 } from "@/helpers/achievementHelper";
 import { RARE_COLOR } from "@/helpers/colorHelper";
 import {
+  GAME_UNLOCK_TYPE_ALL,
   GAME_UNLOCK_TYPE_MONTH,
   GAME_UNLOCK_TYPE_TODAY,
   GAME_UNLOCK_TYPE_WEEK,
@@ -101,6 +102,7 @@ export default function GameRight() {
     GAME_UNLOCK_TYPE_TODAY: "Unlocked - Today",
     GAME_UNLOCK_TYPE_WEEK: "Unlocked - Week",
     GAME_UNLOCK_TYPE_MONTH: "Unlocked - Month",
+    GAME_UNLOCK_TYPE_ALL: "Unlocked - All",
   };
 
   const unlockTypeChange = () => {
@@ -111,6 +113,9 @@ export default function GameRight() {
       dispatch(actionUnlockedTypeChange(GAME_UNLOCK_TYPE_MONTH));
     }
     if ((gameUnlockType ?? GAME_UNLOCK_TYPE_TODAY) == GAME_UNLOCK_TYPE_MONTH) {
+      dispatch(actionUnlockedTypeChange(GAME_UNLOCK_TYPE_ALL));
+    }
+    if ((gameUnlockType ?? GAME_UNLOCK_TYPE_TODAY) == GAME_UNLOCK_TYPE_ALL) {
       dispatch(actionUnlockedTypeChange(GAME_UNLOCK_TYPE_TODAY));
     }
   };

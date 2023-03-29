@@ -18,6 +18,7 @@ import {
   GAME_BACKLOG_SORT_LOCKED,
   GAME_BACKLOG_SORT_PINNED,
   GAME_BACKLOG_SORT_UNLOCKED,
+  GAME_UNLOCK_TYPE_ALL,
   GAME_UNLOCK_TYPE_MONTH,
   GAME_UNLOCK_TYPE_TODAY,
   GAME_UNLOCK_TYPE_WEEK,
@@ -132,7 +133,7 @@ export const getaUnlockedAchievementsByType = (achievements, type) => {
       );
     }
 
-    if (type == ALL) {
+    if (type == GAME_UNLOCK_TYPE_ALL) {
       newAchievements = achievements.filter(
         (achievement) => achievement.achieved == 1
       );
