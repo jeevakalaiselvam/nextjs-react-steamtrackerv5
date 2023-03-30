@@ -285,7 +285,7 @@ export default function GameContent() {
                       getAchievementsForFilterType(
                         filteredAchievementsForSortAndFilterOption(
                           achievements,
-                          gameBacklogSort,
+                          GAME_BACKLOG_SORT_LOCKED,
                           GAME_BACKLOG_FILTER_ALL
                         ),
                         type
