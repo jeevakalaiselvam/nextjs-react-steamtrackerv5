@@ -10,12 +10,29 @@ const INITIAL_STATE = {
     gameBacklogFilter: "",
     gameUnlockType: "",
   },
+  phaseInfo: {},
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case TYPES.GAME_ADD_ACHIEVEMENT_PHASE:
+      return {
+        ...state,
+        phaseInfo: {
+          ...(state?.phaseInfo ?? {}),
+          [payload.gameId]: {
+            ...((state?.phaseInfo ?? {})[payload.gameId] ?? {}),
+            [payload.phase]: [
+              ...(((state?.phaseInfo ?? {})[payload.gameId] ?? {})[
+                payload.phase
+              ] ?? []),
+            ],
+          },
+        },
+      };
+
     case TYPES.SET_HIDDEN_DESC_GAME:
       return {
         ...state,

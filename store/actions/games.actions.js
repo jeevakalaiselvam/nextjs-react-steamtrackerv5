@@ -19,6 +19,15 @@ export const actionFetchAllGames = () => {
   };
 };
 
+export const actionGameAddAchievementPhase = (gameId, phase, achievementId) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.GAME_ADD_ACHIEVEMENT_PHASE,
+      payload: { gameId, phase, achievementId },
+    });
+  };
+};
+
 export const actionSetHiddenDescriptionForGame = (gameId, achievements) => {
   return (dispatch) => {
     return dispatch({

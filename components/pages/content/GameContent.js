@@ -30,16 +30,31 @@ import {
   GAME_BACKLOG_SORT_ALL,
   GAME_BACKLOG_SORT_LOCKED,
   GAME_BACKLOG_SORT_UNLOCKED,
+  PHASE_ALL,
+  PHASE_ALL_TITLE,
+  PHASE_EASY,
+  PHASE_EASY_TITLE,
+  PHASE_GRIND,
+  PHASE_GRIND_TITLE,
+  PHASE_HARD,
+  PHASE_HARD_TITLE,
+  PHASE_MISSABLE,
+  PHASE_MISSABLE_TITLE,
+  PHASE_ONLINE,
+  PHASE_ONLINE_TITLE,
+  PHASE_STORY,
+  PHASE_STORY_TITLE,
 } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
+  actionAddNewPhaseGame,
   actionChangeBacklogFilter,
   actionChangeGameBacklogSort,
   actionSetHiddenDescriptionForGame,
 } from "@/store/actions/games.actions";
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import styled from "styled-components";
@@ -64,7 +79,7 @@ const BacklogContainer = styled.div`
 const PhaseContainer = styled.div`
   display: flex;
   align-content: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.2);
   flex: 2;
@@ -156,7 +171,7 @@ export default function GameContent() {
   const router = useRouter();
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
-  const { games, preferences, hiddenDescriptions } = steamtracker;
+  const { games, preferences, hiddenDescriptions, phaseInfo } = steamtracker;
   const { selectedGame, gameBacklogSort, gameBacklogFilter } = preferences;
 
   const game = games?.find((game) => game.id == selectedGame);
@@ -257,6 +272,16 @@ export default function GameContent() {
     dispatch(actionChangeBacklogFilter(type));
   };
 
+  const phaseItems = [
+    { id: PHASE_ALL, title: PHASE_ALL_TITLE },
+    { id: PHASE_STORY, title: PHASE_STORY_TITLE },
+    { id: PHASE_EASY, title: PHASE_EASY_TITLE },
+    { id: PHASE_MISSABLE, title: PHASE_MISSABLE_TITLE },
+    { id: PHASE_HARD, title: PHASE_HARD_TITLE },
+    { id: PHASE_GRIND, title: PHASE_GRIND_TITLE },
+    { id: PHASE_ONLINE, title: PHASE_ONLINE_TITLE },
+  ];
+
   return (
     <Container>
       <BacklogContainer>
@@ -311,7 +336,46 @@ export default function GameContent() {
           </InnerList>
         </BacklogContent>
       </BacklogContainer>
-      <PhaseContainer></PhaseContainer>
+      <PhaseContainer>
+        <PhaseHeader>
+          {phaseItems.map((phase) => {
+            const { id, title } = phase;
+            return (
+              <PhaseItem
+                onDoubleClick={() => {
+                  renamePhaseItem(phase);
+                }}
+              >
+                {title.toUpperCase()}
+              </PhaseItem>
+            );
+          })}
+        </PhaseHeader>
+      </PhaseContainer>
     </Container>
   );
 }
+
+const PhaseItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.25rem 0.5rem;
+  border-bottom: 2px solid #009eff00;
+  border-radius: 4px 4px 0px 0px;
+  margin-right: 0.25rem;
+
+  &:hover {
+    cursor: pointer;
+    border-bottom: 2px solid #009eff;
+  }
+`;
+
+const PhaseHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.5rem;
+  flex-direction: row;
+`;
