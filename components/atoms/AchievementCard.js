@@ -7,7 +7,9 @@ import { PHASE_ALL, PHASE_ALL_TITLE } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
   actionAchievementTogglePhaseVisibility,
+  actionAddAchievementPinnned,
   actionGameAddAchievementPhase,
+  actionRemoveAchievementPinnned,
 } from "@/store/actions/games.actions";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -24,7 +26,7 @@ const Container = styled.div`
   margin: ${(props) => props.margin ?? "1rem 1rem 0rem 0rem"};
   border-radius: 4px;
   align-self: stretch;
-  padding: 1rem 1rem 2.5rem 1rem;
+  padding: 1rem 1rem 3rem 1rem;
   opacity: ${(props) => (props.achieved ? "0.15" : "1")};
   position: relative;
 
@@ -51,6 +53,22 @@ const Icon = styled.div`
   background: url(${(props) => props.src});
   background-size: contain;
   background-repeat: no-repeat;
+`;
+
+const PinnedData = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+  color: ${(props) => (props.isPinned ? "#009EFF" : "")};
+
+  &:hover {
+    color: #009eff;
+  }
 `;
 
 const Data = styled.div`
@@ -119,6 +137,7 @@ export default function AchievementCard({
     hiddenDescriptions,
     achievementPhaseVisible,
     phaseInfo,
+    pinnedAchievements,
   } = steamtracker;
   const { selectedGame, selectedGameAll, gameBacklogSort } = preferences;
 
@@ -139,6 +158,14 @@ export default function AchievementCard({
     dispatch(actionGameAddAchievementPhase(gameId, phase.id, name));
   };
 
+  const addToPinOrRemoveHandler = () => {
+    if (!(pinnedAchievements ?? []).includes(name)) {
+      dispatch(actionAddAchievementPinnned(name));
+    } else {
+      dispatch(actionRemoveAchievementPinnned(name));
+    }
+  };
+
   return (
     <Container
       onMouseEnter={() => {
@@ -152,7 +179,7 @@ export default function AchievementCard({
       width={width}
     >
       <IconContainer>
-        <Icon src={icon} />
+        <Icon src={icon}></Icon>
       </IconContainer>
       <Data>
         <Title
@@ -203,6 +230,14 @@ export default function AchievementCard({
             }
           })}
         </PhaseSelection>
+      )}
+      {!achievementPhaseVisible && (
+        <PinnedData
+          isPinned={(pinnedAchievements ?? []).includes(name)}
+          onClick={addToPinOrRemoveHandler}
+        >
+          {getIcon("pinnedonly")}
+        </PinnedData>
       )}
     </Container>
   );

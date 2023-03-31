@@ -49,6 +49,33 @@ export const actionGameSelectPhaseActive = (phase) => {
   };
 };
 
+export const actionGameUnlockViewTypeChange = (viewType) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.GAME_UNLOCK_VIEW_TYPE_CHANGE,
+      payload: viewType,
+    });
+  };
+};
+
+export const actionAddAchievementPinnned = (achievementId) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.ACHIEVEMENT_ADD_PINNED,
+      payload: achievementId,
+    });
+  };
+};
+
+export const actionRemoveAchievementPinnned = (achievementId) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.ACHIEVEMENT_REMOVE_PINNED,
+      payload: achievementId,
+    });
+  };
+};
+
 export const actionGameAddAchievementPhase = (gameId, phase, achievementId) => {
   return (dispatch) => {
     return dispatch({

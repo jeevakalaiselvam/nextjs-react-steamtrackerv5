@@ -9,9 +9,15 @@ import {
 import { BsTrophyFill } from "react-icons/bs";
 import { TbRefresh } from "react-icons/tb";
 import {
+  HiAdjustments,
+  HiExclamationCircle,
   HiFolderAdd,
   HiLightningBolt,
+  HiLocationMarker,
   HiOutlineViewList,
+  HiPencilAlt,
+  HiShieldCheck,
+  HiStar,
   HiTicket,
   HiViewBoards,
   HiViewGrid,
@@ -40,6 +46,12 @@ export const getIcon = (type, color) => {
       return <HiViewList />;
     case "sidebartitle":
       return <HiOutlineViewList />;
+    case "view":
+      return <HiExclamationCircle />;
+    case "unlockedonly":
+      return <HiShieldCheck />;
+    case "pinnedonly":
+      return <HiStar />;
     default:
       return <AiFillGold />;
   }

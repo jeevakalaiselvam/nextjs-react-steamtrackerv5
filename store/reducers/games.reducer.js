@@ -13,10 +13,12 @@ const INITIAL_STATE = {
     gameBacklogSort: "",
     gameBacklogFilter: "",
     gameUnlockType: "",
+    gameUnlockViewType: "",
   },
   phaseInfo: {},
   phaseActive: PHASE_ALL,
   achievementPhaseVisible: false,
+  pinnedAchievements: [],
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -46,6 +48,20 @@ const reducer = (state = INITIAL_STATE, action) => {
         achievementId
       );
 
+    case TYPES.ACHIEVEMENT_ADD_PINNED:
+      return {
+        ...state,
+        pinnedAchievements: [...(state?.pinnedAchievements ?? []), payload],
+      };
+
+    case TYPES.ACHIEVEMENT_REMOVE_PINNED:
+      return {
+        ...state,
+        pinnedAchievements: (state?.pinnedAchievements ?? []).filter(
+          (achievement) => achievement != payload
+        ),
+      };
+
     case TYPES.ACHIEVEMENT_TOGGLE_PHASE_VISIBILITY:
       return {
         ...state,
@@ -73,6 +89,15 @@ const reducer = (state = INITIAL_STATE, action) => {
         preferences: {
           ...(state?.preferences ?? {}),
           gameUnlockType: payload,
+        },
+      };
+
+    case TYPES.GAME_UNLOCK_VIEW_TYPE_CHANGE:
+      return {
+        ...state,
+        preferences: {
+          ...(state?.preferences ?? {}),
+          gameUnlockViewType: payload,
         },
       };
 

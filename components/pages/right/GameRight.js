@@ -10,9 +10,12 @@ import {
   GAME_UNLOCK_TYPE_MONTH,
   GAME_UNLOCK_TYPE_TODAY,
   GAME_UNLOCK_TYPE_WEEK,
+  GAME_UNLOCK_VIEW_TYPE_PINNED,
+  GAME_UNLOCK_VIEW_TYPE_UNLOCK,
 } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
+  actionGameUnlockViewTypeChange,
   actionRefreshGameData,
   actionUnlockedTypeChange,
 } from "@/store/actions/games.actions";
@@ -39,13 +42,13 @@ const Header = styled.div`
   justify-content: center;
   padding: 1rem;
   width: 100%;
-  position: relative;
 `;
 
 const Title = styled.div`
   display: flex;
   align-content: center;
   justify-content: center;
+  flex: 2;
   padding: 1rem;
   font-size: 1.5rem;
 
@@ -55,15 +58,47 @@ const Title = styled.div`
   }
 `;
 
+const ViewType = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+
+  &:hover {
+    color: #009eff;
+  }
+`;
+
+const TypeIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+  font-size: 2rem;
+  margin-right: 0.5rem;
+`;
+
+const TypeTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Refresh = styled.div`
   display: flex;
   align-content: center;
-  justify-content: center;
-  position: absolute;
-  right: 0;
-  top: 1rem;
+  justify-content: flex-end;
+  flex: 1;
   font-size: 1.75rem;
   padding: 1rem;
+`;
+
+const InnerIcon = styled.div`
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+  font-size: 1.75rem;
 
   -webkit-animation: ${(props) =>
     props.rotate ? "rotating 0.25s linear infinite" : ""};
@@ -125,8 +160,8 @@ export default function GameRight() {
   const router = useRouter();
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
-  const { games, preferences } = steamtracker;
-  const { selectedGame, gameUnlockType } = preferences;
+  const { games, preferences, pinnedAchievements } = steamtracker;
+  const { selectedGame, gameUnlockType, gameUnlockViewType } = preferences;
 
   const game = games.find((g) => g.id == selectedGame);
   const { gameId } = router.query;
@@ -147,6 +182,11 @@ export default function GameRight() {
     GAME_UNLOCK_TYPE_WEEK: "Unlocked - Week",
     GAME_UNLOCK_TYPE_MONTH: "Unlocked - Month",
     GAME_UNLOCK_TYPE_ALL: "Unlocked - All",
+  };
+
+  const gameViewTypeMap = {
+    GAME_UNLOCK_VIEW_TYPE_UNLOCK: "PINNED",
+    GAME_UNLOCK_VIEW_TYPE_PINNED: "UNLOCKED",
   };
 
   const unlockTypeChange = () => {
@@ -177,30 +217,74 @@ export default function GameRight() {
   return (
     <Container>
       <Header>
-        <Title onClick={unlockTypeChange} color={RARE_COLOR}>
-          {unlockTextMap[gameUnlockType ?? GAME_UNLOCK_TYPE_TODAY]}
-        </Title>
-        <Refresh
-          color={RARE_COLOR}
-          onClick={refreshClickHandler}
-          rotate={refreshing}
+        <ViewType
+          onClick={() => {
+            dispatch(
+              actionGameUnlockViewTypeChange(
+                gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_UNLOCK ??
+                  GAME_UNLOCK_VIEW_TYPE_UNLOCK
+                  ? GAME_UNLOCK_VIEW_TYPE_PINNED
+                  : GAME_UNLOCK_VIEW_TYPE_UNLOCK
+              )
+            );
+          }}
         >
-          {getIcon("refresh")}
+          {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_UNLOCK && (
+            <TypeIcon>{getIcon("unlockedonly")}</TypeIcon>
+          )}
+          {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_PINNED && (
+            <TypeIcon>{getIcon("pinnedonly")}</TypeIcon>
+          )}
+        </ViewType>
+        {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_UNLOCK && (
+          <Title onClick={unlockTypeChange} color={RARE_COLOR}>
+            {unlockTextMap[gameUnlockType ?? GAME_UNLOCK_TYPE_TODAY]}
+          </Title>
+        )}
+        {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_PINNED && (
+          <Title color={RARE_COLOR}>Pinned Achievements</Title>
+        )}
+        <Refresh>
+          <InnerIcon
+            color={RARE_COLOR}
+            onClick={refreshClickHandler}
+            rotate={refreshing}
+          >
+            {getIcon("refresh")}
+          </InnerIcon>
         </Refresh>
       </Header>
       <UnlockedAchievement>
-        {achievementsUnlockedToday.map((achievement) => {
-          return (
-            <AchievementCard
-              achievement={achievement}
-              key={achievement.name}
-              gameId={game.id}
-              disableOpacity={true}
-              margin={"1rem 0rem 0rem 0rem"}
-              width={"370px"}
-            />
-          );
-        })}
+        {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_UNLOCK &&
+          achievementsUnlockedToday.map((achievement) => {
+            return (
+              <AchievementCard
+                achievement={achievement}
+                key={achievement.name}
+                gameId={game.id}
+                disableOpacity={true}
+                margin={"1rem 0rem 0rem 0rem"}
+                width={"370px"}
+              />
+            );
+          })}
+        {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_PINNED &&
+          game?.achievements
+            .filter((achievement) =>
+              (pinnedAchievements ?? []).includes(achievement.name)
+            )
+            .map((achievement) => {
+              return (
+                <AchievementCard
+                  achievement={achievement}
+                  key={achievement.name}
+                  gameId={game.id}
+                  disableOpacity={true}
+                  margin={"1rem 0rem 0rem 0rem"}
+                  width={"370px"}
+                />
+              );
+            })}
       </UnlockedAchievement>
     </Container>
   );
