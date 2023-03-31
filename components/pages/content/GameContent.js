@@ -50,6 +50,7 @@ import {
   actionAddNewPhaseGame,
   actionChangeBacklogFilter,
   actionChangeGameBacklogSort,
+  actionGameSelectPhaseActive,
   actionSetHiddenDescriptionForGame,
 } from "@/store/actions/games.actions";
 import axios from "axios";
@@ -171,7 +172,8 @@ export default function GameContent() {
   const router = useRouter();
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
-  const { games, preferences, hiddenDescriptions, phaseInfo } = steamtracker;
+  const { games, preferences, hiddenDescriptions, phaseInfo, phaseActive } =
+    steamtracker;
   const { selectedGame, gameBacklogSort, gameBacklogFilter } = preferences;
 
   const game = games?.find((game) => game.id == selectedGame);
@@ -196,6 +198,16 @@ export default function GameContent() {
     );
     return filtered;
   }, [achievements, gameBacklogSort, gameBacklogFilter]);
+
+  const phaseFilteredAchievements = React.useMemo(() => {
+    let achievementsInPhase = phaseInfo[id][phaseActive] ?? [];
+    const filtered = achievements.filter((achievement) => {
+      if (achievementsInPhase.includes(achievement.name)) {
+        return true;
+      }
+    });
+    return filtered;
+  }, [achievements]);
 
   useEffect(() => {
     const getHidden = async () => {
@@ -342,8 +354,9 @@ export default function GameContent() {
             const { id, title } = phase;
             return (
               <PhaseItem
-                onDoubleClick={() => {
-                  renamePhaseItem(phase);
+                active={phaseActive == id}
+                onClick={() => {
+                  dispatch(actionGameSelectPhaseActive(id));
                 }}
               >
                 {title.toUpperCase()}
@@ -351,10 +364,23 @@ export default function GameContent() {
             );
           })}
         </PhaseHeader>
+        <PhaseContent>
+          {phaseFilteredAchievements.map((achievement) => {
+            return (
+              <AchievementCard
+                achievement={achievement}
+                key={achievement.name}
+                gameId={id}
+              />
+            );
+          })}
+        </PhaseContent>
       </PhaseContainer>
     </Container>
   );
 }
+
+const PhaseContent = styled.div``;
 
 const PhaseItem = styled.div`
   display: flex;
@@ -362,12 +388,13 @@ const PhaseItem = styled.div`
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.25rem 0.5rem;
-  border-bottom: 2px solid #009eff00;
+  border-bottom: ${(props) =>
+    props.active ? "2px solid #009eff" : "2px solid #009eff00"};
   border-radius: 4px 4px 0px 0px;
   margin-right: 0.25rem;
+  cursor: pointer;
 
   &:hover {
-    cursor: pointer;
     border-bottom: 2px solid #009eff;
   }
 `;

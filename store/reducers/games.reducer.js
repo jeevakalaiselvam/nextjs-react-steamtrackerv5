@@ -1,3 +1,4 @@
+import { PHASE_ALL } from "@/helpers/constantHelper";
 import * as TYPES from "../types/games.types";
 
 const INITIAL_STATE = {
@@ -11,6 +12,7 @@ const INITIAL_STATE = {
     gameUnlockType: "",
   },
   phaseInfo: {},
+  phaseActive: PHASE_ALL,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -31,6 +33,12 @@ const reducer = (state = INITIAL_STATE, action) => {
             ],
           },
         },
+      };
+
+    case TYPES.GAME_SELECT_PHASE_ACTIVE:
+      return {
+        ...state,
+        phaseActive: payload,
       };
 
     case TYPES.SET_HIDDEN_DESC_GAME:

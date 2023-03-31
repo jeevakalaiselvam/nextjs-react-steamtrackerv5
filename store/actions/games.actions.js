@@ -19,6 +19,15 @@ export const actionFetchAllGames = () => {
   };
 };
 
+export const actionGameSelectPhaseActive = (phase) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.GAME_SELECT_PHASE_ACTIVE,
+      payload: phase,
+    });
+  };
+};
+
 export const actionGameAddAchievementPhase = (gameId, phase, achievementId) => {
   return (dispatch) => {
     return dispatch({
