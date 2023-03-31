@@ -22,6 +22,13 @@ import {
   GAME_UNLOCK_TYPE_MONTH,
   GAME_UNLOCK_TYPE_TODAY,
   GAME_UNLOCK_TYPE_WEEK,
+  PHASE_ALL,
+  PHASE_EASY,
+  PHASE_GRIND,
+  PHASE_HARD,
+  PHASE_MISSABLE,
+  PHASE_ONLINE,
+  PHASE_STORY,
 } from "./constantHelper";
 
 export const MONTH = "MONTH";
@@ -251,4 +258,76 @@ export const getAchievementsForFilterType = (achievements, filterType) => {
       break;
   }
   return filterAchievements;
+};
+
+export const addOrRemoveAchievementFromPhase = (
+  state,
+  phase,
+  gameId,
+  achievementId
+) => {
+  if (
+    (((state.phaseInfo ?? {})?.[gameId] ?? {})?.[phase] ?? []).includes(
+      achievementId
+    )
+  ) {
+    return {
+      ...state,
+      phaseInfo: {
+        ...(state.phaseInfo ?? {}),
+        [gameId]: {
+          ...(state.phaseInfo ?? {})[gameId],
+          [phase]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[phase] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+        },
+      },
+    };
+  } else {
+    let newState = {
+      ...state,
+      phaseInfo: {
+        ...(state.phaseInfo ?? {}),
+        [gameId]: {
+          ...(state.phaseInfo ?? {})[gameId],
+          [PHASE_ALL]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_ALL] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+          [PHASE_EASY]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_EASY] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+          [PHASE_STORY]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_STORY] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+          [PHASE_GRIND]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_GRIND] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+          [PHASE_ONLINE]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_ONLINE] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+          [PHASE_MISSABLE]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_MISSABLE] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+          [PHASE_HARD]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_HARD] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+        },
+      },
+    };
+
+    newState = {
+      ...newState,
+      phaseInfo: {
+        ...(newState.phaseInfo ?? {}),
+        [gameId]: {
+          ...(newState.phaseInfo ?? {})[gameId],
+          [phase]: [
+            ...(((newState.phaseInfo ?? {})?.[gameId] ?? {})?.[phase] ?? []),
+            achievementId,
+          ],
+        },
+      },
+    };
+    return newState;
+  }
 };

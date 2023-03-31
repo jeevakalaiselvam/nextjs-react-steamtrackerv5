@@ -1,3 +1,4 @@
+import { addOrRemoveAchievementFromPhase } from "@/helpers/achievementHelper";
 import { PHASE_ALL } from "@/helpers/constantHelper";
 import * as TYPES from "../types/games.types";
 
@@ -21,20 +22,16 @@ const reducer = (state = INITIAL_STATE, action) => {
 
   switch (type) {
     case TYPES.GAME_ADD_ACHIEVEMENT_PHASE:
-      return {
-        ...state,
-        phaseInfo: {
-          ...(state?.phaseInfo ?? {}),
-          [payload.gameId]: {
-            ...((state?.phaseInfo ?? {})[payload.gameId] ?? {}),
-            [payload.phase]: [
-              ...(((state?.phaseInfo ?? {})[payload.gameId] ?? {})[
-                payload.phase
-              ] ?? []),
-            ],
-          },
-        },
-      };
+      const gameId = payload.gameId;
+      const phase = payload.phase;
+      const achievementId = payload.achievementId;
+
+      return addOrRemoveAchievementFromPhase(
+        state,
+        phase,
+        gameId,
+        achievementId
+      );
 
     case TYPES.ACHIEVEMENT_TOGGLE_PHASE_VISIBILITY:
       return {

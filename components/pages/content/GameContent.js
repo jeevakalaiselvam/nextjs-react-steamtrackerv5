@@ -31,6 +31,7 @@ import {
   GAME_BACKLOG_SORT_ALL,
   GAME_BACKLOG_SORT_LOCKED,
   GAME_BACKLOG_SORT_UNLOCKED,
+  PHASE_ALL,
 } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
@@ -164,17 +165,7 @@ export default function GameContent() {
 
   const game = games?.find((game) => game.id == selectedGame);
 
-  const {
-    id,
-    playtime,
-    name,
-    achievements,
-    completion,
-    toGet,
-    total,
-    completed,
-    lastPlayed,
-  } = game;
+  const { id, achievements } = game;
 
   const filteredAchievements = React.useMemo(() => {
     const filtered = filteredAchievementsForSortAndFilterOption(
@@ -188,12 +179,18 @@ export default function GameContent() {
   const phaseFilteredAchievements = React.useMemo(() => {
     let achievementsInPhase = phaseInfo[id][phaseActive] ?? [];
     const filtered = achievements.filter((achievement) => {
-      if (achievementsInPhase.includes(achievement.name)) {
-        return true;
+      if (phaseActive !== PHASE_ALL) {
+        if (achievementsInPhase.includes(achievement.name)) {
+          return true;
+        }
+      } else {
+        if (achievement.achieved != 1) {
+          return true;
+        }
       }
     });
     return filtered;
-  }, [achievements]);
+  }, [achievements, phaseActive, id]);
 
   useEffect(() => {
     const getHidden = async () => {
@@ -356,7 +353,17 @@ export default function GameContent() {
   );
 }
 
-const PhaseContent = styled.div``;
+const PhaseContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-left: 0.5rem;
+  min-height: 90vh;
+  max-height: 90vh;
+  overflow: scroll;
+  padding-bottom: 5rem;
+`;
 
 const PhaseItem = styled.div`
   display: flex;
@@ -381,4 +388,5 @@ const PhaseHeader = styled.div`
   justify-content: flex-start;
   padding: 0.5rem;
   flex-direction: row;
+  padding-bottom: 3.8rem;
 `;

@@ -3,8 +3,12 @@ import {
   getXPForPercentage,
 } from "@/helpers/achievementHelper";
 import { phaseItems } from "@/helpers/arrayHelper";
+import { PHASE_ALL, PHASE_ALL_TITLE } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
-import { actionAchievementTogglePhaseVisibility } from "@/store/actions/games.actions";
+import {
+  actionAchievementTogglePhaseVisibility,
+  actionGameAddAchievementPhase,
+} from "@/store/actions/games.actions";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,14 +17,14 @@ import PhaseButton from "./PhaseButton";
 
 const Container = styled.div`
   display: flex;
-  width: ${(props) => props.width ?? "375px"};
+  width: ${(props) => props.width ?? "370px"};
   align-items: flex-start;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.2);
   margin: ${(props) => props.margin ?? "1rem 1rem 0rem 0rem"};
   border-radius: 4px;
   padding: 1rem 1rem 2.5rem 1rem;
-  align-self: stretch;
+  min-height: 110px;
   opacity: ${(props) => (props.achieved ? "0.15" : "1")};
   position: relative;
 
@@ -109,8 +113,13 @@ export default function AchievementCard({
 }) {
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
-  const { games, preferences, hiddenDescriptions, achievementPhaseVisible } =
-    steamtracker;
+  const {
+    games,
+    preferences,
+    hiddenDescriptions,
+    achievementPhaseVisible,
+    phaseInfo,
+  } = steamtracker;
   const { selectedGame, gameBacklogSort } = preferences;
 
   const [hovered, setHovered] = useState(false);
@@ -125,6 +134,10 @@ export default function AchievementCard({
     unlocktime,
     displayName,
   } = achievement;
+
+  const phaseSelectedForAchievment = (phase, gameId) => {
+    dispatch(actionGameAddAchievementPhase(gameId, phase.id, name));
+  };
 
   return (
     <Container
@@ -162,10 +175,22 @@ export default function AchievementCard({
       >
         {getIcon("phaseactivate")}
       </PhaseActivate>
-      {hovered && achievementPhaseVisible && (
+      {true && achievementPhaseVisible && (
         <PhaseSelection>
           {phaseItems.map((phase) => {
-            return <PhaseButton phase={phase} />;
+            if (phase.title !== PHASE_ALL_TITLE) {
+              return (
+                <PhaseButton
+                  active={(
+                    (phaseInfo ?? {})?.[gameId]?.[phase.id] ?? []
+                  ).includes(name)}
+                  phase={phase}
+                  onClick={() => {
+                    phaseSelectedForAchievment(phase, selectedGame);
+                  }}
+                />
+              );
+            }
           })}
         </PhaseSelection>
       )}

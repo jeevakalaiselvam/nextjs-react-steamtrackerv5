@@ -9,19 +9,24 @@ const Container = styled.div`
   font-size: 1rem;
   margin-right: 0.25rem;
   padding: 0.25rem 0.5rem;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: ${(props) =>
+    props.active ? "rgba(0, 0, 0, 0.8)" : "rgba(0, 0, 0, 0.1)"};
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.8);
   }
 `;
 
-export default function PhaseButton({ phase }) {
+export default function PhaseButton({ phase, onClick, active }) {
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
   const { preferences } = steamtracker;
   const { selectedGame } = preferences;
 
   const { id, title } = phase;
-  return <Container>{title}</Container>;
+  return (
+    <Container active={active} onClick={onClick}>
+      {title}
+    </Container>
+  );
 }
