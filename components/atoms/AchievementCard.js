@@ -24,7 +24,6 @@ const Container = styled.div`
   margin: ${(props) => props.margin ?? "1rem 1rem 0rem 0rem"};
   border-radius: 4px;
   padding: 1rem 1rem 2.5rem 1rem;
-  min-height: 110px;
   opacity: ${(props) => (props.achieved ? "0.15" : "1")};
   position: relative;
 
@@ -201,6 +200,7 @@ export default function AchievementCard({
 const PhaseSelection = styled.div`
   position: absolute;
   bottom: 0;
+  left: 0;
   right: 1rem;
   display: flex;
   margin-right: 1rem;
