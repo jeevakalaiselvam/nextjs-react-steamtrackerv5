@@ -270,6 +270,7 @@ export default function GameRight() {
           })}
         {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_PINNED &&
           game?.achievements
+            .sort((ach1, ach2) => ach2.percentage - ach1.percentage)
             .filter((achievement) =>
               (pinnedAchievements ?? []).includes(achievement.name)
             )
