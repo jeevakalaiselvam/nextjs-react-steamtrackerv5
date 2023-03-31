@@ -20,14 +20,16 @@ export const PHASE_ALL = "PHASE_ALL";
 export const PHASE_STORY = "PHASE_STORY";
 export const PHASE_EASY = "PHASE_EASY";
 export const PHASE_MISSABLE = "PHASE_MISSABLE";
+export const PHASE_COLLECTIBLE = "PHASE_COLLECTIBLE";
 export const PHASE_GRIND = "PHASE_GRIND";
 export const PHASE_HARD = "PHASE_HARD";
 export const PHASE_ONLINE = "PHASE_ONLINE";
 
-export const PHASE_ALL_TITLE = "ALL";
+export const PHASE_ALL_TITLE = "UNTAGGED";
 export const PHASE_STORY_TITLE = "STORY";
 export const PHASE_EASY_TITLE = "EASY";
 export const PHASE_MISSABLE_TITLE = "MISSABLE";
+export const PHASE_COLLECTIBLE_TITLE = "COLLECTIBLE";
 export const PHASE_GRIND_TITLE = "GRIND";
 export const PHASE_HARD_TITLE = "HARD";
 export const PHASE_ONLINE_TITLE = "ONLINE";

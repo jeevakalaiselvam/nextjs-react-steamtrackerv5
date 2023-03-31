@@ -32,6 +32,13 @@ import {
   GAME_BACKLOG_SORT_LOCKED,
   GAME_BACKLOG_SORT_UNLOCKED,
   PHASE_ALL,
+  PHASE_COLLECTIBLE,
+  PHASE_EASY,
+  PHASE_GRIND,
+  PHASE_HARD,
+  PHASE_MISSABLE,
+  PHASE_ONLINE,
+  PHASE_STORY,
 } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
@@ -60,7 +67,7 @@ const BacklogContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   margin-right: 1rem;
-  flex: 3;
+  flex: 2;
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
@@ -70,7 +77,7 @@ const PhaseContainer = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.2);
-  flex: 2;
+  flex: 3;
 `;
 
 const BacklogHeader = styled.div`
@@ -184,13 +191,35 @@ export default function GameContent() {
           return true;
         }
       } else {
-        if (achievement.achieved != 1) {
+        if (
+          !(phaseInfo[id][PHASE_STORY] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id][PHASE_EASY] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(
+            achievement.name
+          ) &&
+          !(phaseInfo[id][PHASE_GRIND] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id][PHASE_HARD] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id][PHASE_ONLINE] ?? []).includes(achievement.name) &&
+          achievement.achieved != 1
+        ) {
           return true;
         }
       }
     });
     return filtered;
-  }, [achievements, phaseActive, id]);
+  }, [
+    achievements,
+    phaseActive,
+    id,
+    phaseInfo[id][PHASE_STORY],
+    phaseInfo[id][PHASE_EASY],
+    phaseInfo[id][PHASE_MISSABLE],
+    phaseInfo[id][PHASE_COLLECTIBLE],
+    phaseInfo[id][PHASE_EASY],
+    phaseInfo[id][PHASE_HARD],
+    phaseInfo[id][PHASE_ONLINE],
+  ]);
 
   useEffect(() => {
     const getHidden = async () => {
@@ -370,7 +399,6 @@ const PhaseContent = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   margin-left: 0.5rem;
-  min-height: 90vh;
   max-height: 90vh;
   overflow: scroll;
   padding-bottom: 5rem;
