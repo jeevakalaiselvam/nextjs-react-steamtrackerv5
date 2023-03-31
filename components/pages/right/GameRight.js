@@ -12,9 +12,13 @@ import {
   GAME_UNLOCK_TYPE_WEEK,
 } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
-import { actionUnlockedTypeChange } from "@/store/actions/games.actions";
+import {
+  actionRefreshGameData,
+  actionUnlockedTypeChange,
+} from "@/store/actions/games.actions";
+import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -61,6 +65,45 @@ const Refresh = styled.div`
   font-size: 1.75rem;
   padding: 1rem;
 
+  -webkit-animation: ${(props) =>
+    props.rotate ? "rotating 0.25s linear infinite" : ""};
+  -moz-animation: ${(props) =>
+    props.rotate ? "rotating 0.25s linear infinite" : ""};
+  -ms-animation: ${(props) =>
+    props.rotate ? "rotating 0.25s linear infinite" : ""};
+  -o-animation: ${(props) =>
+    props.rotate ? "rotating 0.25s linear infinite" : ""};
+  animation: ${(props) => (props.rotate ? "rotating 2s linear infinite" : "")};
+
+  @-webkit-keyframes rotating /* Safari and Chrome */ {
+    from {
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes rotating {
+    from {
+      -ms-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -ms-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
   &:hover {
     color: ${(props) => props.color};
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.75);
@@ -86,6 +129,7 @@ export default function GameRight() {
   const { selectedGame, gameUnlockType } = preferences;
 
   const game = games.find((g) => g.id == selectedGame);
+  const { gameId } = router.query;
 
   const achievementsUnlockedToday = useMemo(() => {
     let unlockedToday = getaUnlockedAchievementsByType(
@@ -120,13 +164,29 @@ export default function GameRight() {
     }
   };
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const refreshClickHandler = async () => {
+    setRefreshing(true);
+    const response = await axios.get(`/api/refresh/${gameId}`);
+    const gameRefreshedData = response.data.data;
+    dispatch(actionRefreshGameData(gameId, { ...gameRefreshedData }));
+    setRefreshing(false);
+  };
+
   return (
     <Container>
       <Header>
         <Title onClick={unlockTypeChange} color={RARE_COLOR}>
           {unlockTextMap[gameUnlockType ?? GAME_UNLOCK_TYPE_TODAY]}
         </Title>
-        <Refresh color={RARE_COLOR}>{getIcon("refresh")}</Refresh>
+        <Refresh
+          color={RARE_COLOR}
+          onClick={refreshClickHandler}
+          rotate={refreshing}
+        >
+          {getIcon("refresh")}
+        </Refresh>
       </Header>
       <UnlockedAchievement>
         {achievementsUnlockedToday.map((achievement) => {

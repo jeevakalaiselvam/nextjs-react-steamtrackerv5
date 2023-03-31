@@ -19,6 +19,18 @@ export const actionFetchAllGames = () => {
   };
 };
 
+export const actionRefreshGameData = (gameId, gameRefreshedData) => {
+  let lastUnlockedTime = gameRefreshedData?.achievements.sort(
+    (ach1, ach2) => ach2.unlocktime - ach1.unlocktime
+  )[0]?.unlocktime;
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.REFRESH_SET_GAME_DATA,
+      payload: { gameId, gameRefreshedData, lastUnlockedTime },
+    });
+  };
+};
+
 export const actionAchievementTogglePhaseVisibility = (isVisible) => {
   return (dispatch) => {
     return dispatch({

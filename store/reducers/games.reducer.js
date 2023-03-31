@@ -1,5 +1,6 @@
 import { addOrRemoveAchievementFromPhase } from "@/helpers/achievementHelper";
 import { PHASE_ALL } from "@/helpers/constantHelper";
+import { refreshGameDataByGameId } from "@/helpers/gameHelper";
 import * as TYPES from "../types/games.types";
 
 const INITIAL_STATE = {
@@ -21,6 +22,17 @@ const reducer = (state = INITIAL_STATE, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case TYPES.REFRESH_SET_GAME_DATA:
+      return {
+        ...state,
+        games: refreshGameDataByGameId(
+          state.games,
+          payload.gameId,
+          payload.gameRefreshedData
+        ),
+        lastUnlockedTime: payload.lastUnlockedTime,
+      };
+
     case TYPES.GAME_ADD_ACHIEVEMENT_PHASE:
       const gameId = payload.gameId;
       const phase = payload.phase;

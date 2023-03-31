@@ -167,3 +167,16 @@ export const calculaNextStageForGame = (game) => {
 
   return nextStage;
 };
+
+export const refreshGameDataByGameId = (games, gameId, gameRefreshedData) => {
+  let newGames = [];
+  newGames = games.map((game) => {
+    let newGame = { ...game };
+    if (game.id == gameId) {
+      newGame = { ...newGame, ...gameRefreshedData, recentRefresh: new Date() };
+    }
+    return newGame;
+  });
+
+  return newGames;
+};
