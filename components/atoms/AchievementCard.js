@@ -175,8 +175,8 @@ export default function AchievementCard({
       >
         {getIcon("phaseactivate")}
       </PhaseActivate>
-      {true && achievementPhaseVisible && (
-        <PhaseSelection>
+      {achievementPhaseVisible && (
+        <PhaseSelection hovered={hovered}>
           {phaseItems.map((phase) => {
             if (phase.title !== PHASE_ALL_TITLE) {
               return (
@@ -208,6 +208,7 @@ const PhaseSelection = styled.div`
   align-items: center;
   justify-content: center;
   transform: translateY(2px);
+  opacity: ${(props) => (props.hovered ? "1" : "0.25")};
 `;
 
 const PhaseActivate = styled.div`

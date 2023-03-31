@@ -325,6 +325,17 @@ export default function GameContent() {
         <PhaseHeader>
           {phaseItems.map((phase) => {
             const { id, title } = phase;
+            const phaseCount =
+              id !== PHASE_ALL
+                ? achievements.filter((achievement) =>
+                    (phaseInfo?.[selectedGame]?.[id] ?? []).includes(
+                      achievement.name
+                    )
+                  ).length
+                : achievements.filter(
+                    (achievement) => achievement.achieved != 1
+                  ).length;
+
             return (
               <PhaseItem
                 active={phaseActive == id}
@@ -332,7 +343,7 @@ export default function GameContent() {
                   dispatch(actionGameSelectPhaseActive(id));
                 }}
               >
-                {title.toUpperCase()}
+                {title.toUpperCase()} - {phaseCount}
               </PhaseItem>
             );
           })}
@@ -355,7 +366,7 @@ export default function GameContent() {
 
 const PhaseContent = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
   margin-left: 0.5rem;
@@ -374,7 +385,7 @@ const PhaseItem = styled.div`
   border-bottom: ${(props) =>
     props.active ? "2px solid #009eff" : "2px solid #009eff00"};
   border-radius: 4px 4px 0px 0px;
-  margin-right: 0.25rem;
+  margin-right: 0.5rem;
   cursor: pointer;
 
   &:hover {
