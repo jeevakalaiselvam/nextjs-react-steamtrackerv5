@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   preferences: {
     themeGameId: 1328670,
     selectedGame: "",
+    selectedGameAll: {},
     gameBacklogSort: "",
     gameBacklogFilter: "",
     gameUnlockType: "",
@@ -99,6 +100,15 @@ const reducer = (state = INITIAL_STATE, action) => {
         preferences: {
           ...(state?.preferences ?? {}),
           selectedGame: payload,
+        },
+      };
+
+    case TYPES.SET_SELECTED_GAME_ALL:
+      return {
+        ...state,
+        preferences: {
+          ...(state?.preferences ?? {}),
+          selectedGameAll: payload,
         },
       };
 

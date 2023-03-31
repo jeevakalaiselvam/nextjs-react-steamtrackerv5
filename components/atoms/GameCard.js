@@ -1,5 +1,8 @@
 import { HEADER_IMAGE } from "@/helpers/urlHelper";
-import { actionSetSelectedGame } from "@/store/actions/games.actions";
+import {
+  actionSetSelectedGame,
+  actionSetSelectedGameAll,
+} from "@/store/actions/games.actions";
 import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -62,6 +65,7 @@ export default function GameCard({ game, height }) {
 
   const gameCardClickHandler = () => {
     dispatch(actionSetSelectedGame(id));
+    dispatch(actionSetSelectedGameAll(game));
     router.push(`/games/${id}`);
   };
 

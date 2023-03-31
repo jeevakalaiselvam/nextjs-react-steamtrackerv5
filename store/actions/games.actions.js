@@ -111,3 +111,12 @@ export const actionSetSelectedGame = (gameId) => {
     });
   };
 };
+
+export const actionSetSelectedGameAll = (game) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.SET_SELECTED_GAME_ALL,
+      payload: game,
+    });
+  };
+};

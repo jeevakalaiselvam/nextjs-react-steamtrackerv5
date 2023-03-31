@@ -23,6 +23,7 @@ const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   margin: ${(props) => props.margin ?? "1rem 1rem 0rem 0rem"};
   border-radius: 4px;
+  align-self: stretch;
   padding: 1rem 1rem 2.5rem 1rem;
   opacity: ${(props) => (props.achieved ? "0.15" : "1")};
   position: relative;
@@ -119,7 +120,7 @@ export default function AchievementCard({
     achievementPhaseVisible,
     phaseInfo,
   } = steamtracker;
-  const { selectedGame, gameBacklogSort } = preferences;
+  const { selectedGame, selectedGameAll, gameBacklogSort } = preferences;
 
   const [hovered, setHovered] = useState(false);
 
@@ -154,7 +155,17 @@ export default function AchievementCard({
         <Icon src={icon} />
       </IconContainer>
       <Data>
-        <Title>{displayName}</Title>
+        <Title
+          onClick={() => {
+            if (window !== "undefined") {
+              const searchQuery = `${displayName} achievement ${selectedGameAll.name} `;
+              window.open(`https://www.google.com/search?q=${searchQuery}`);
+              // window.open(`https://www.youtube.com/results?search_query=${searchQuery}`);
+            }
+          }}
+        >
+          {displayName}
+        </Title>
         <Description>
           {hiddenDescriptions?.[gameId]?.[displayName?.toLowerCase().trim()] ??
             description ??
