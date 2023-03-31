@@ -215,6 +215,7 @@ export default function GameContent() {
     phaseInfo[id][PHASE_STORY],
     phaseInfo[id][PHASE_EASY],
     phaseInfo[id][PHASE_MISSABLE],
+    phaseInfo[id][PHASE_GRIND],
     phaseInfo[id][PHASE_COLLECTIBLE],
     phaseInfo[id][PHASE_EASY],
     phaseInfo[id][PHASE_HARD],

@@ -23,6 +23,7 @@ import {
   GAME_UNLOCK_TYPE_TODAY,
   GAME_UNLOCK_TYPE_WEEK,
   PHASE_ALL,
+  PHASE_COLLECTIBLE,
   PHASE_EASY,
   PHASE_GRIND,
   PHASE_HARD,
@@ -310,6 +311,9 @@ export const addOrRemoveAchievementFromPhase = (
           ).filter((achievementPresent) => achievementPresent != achievementId),
           [PHASE_HARD]: (
             ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_HARD] ?? []
+          ).filter((achievementPresent) => achievementPresent != achievementId),
+          [PHASE_COLLECTIBLE]: (
+            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[PHASE_COLLECTIBLE] ?? []
           ).filter((achievementPresent) => achievementPresent != achievementId),
         },
       },
