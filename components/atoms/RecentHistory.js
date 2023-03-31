@@ -1,3 +1,4 @@
+import { getIcon } from "@/helpers/iconHelper";
 import { useRouter } from "next/router";
 import React from "react";
 import { HiOutlineChevronDoubleUp } from "react-icons/hi";
@@ -30,12 +31,29 @@ const LevelFragment = styled.div`
 
 const Header = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: center;
 `;
 
+const IconStart = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 1.5rem;
+`;
+
+const IconEnd = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 1.5rem;
+`;
+
 const Title = styled.div`
-  width: 100px;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,7 +84,7 @@ const HistoryItem = styled.div`
   color: ${(props) => (props.current ? "#fefefe" : "#737c9d")};
   opacity: ${(props) => (props.transparent ? "0.25" : "1.0")};
   &:hover {
-    background-color: #3049d1;
+    background-color: #009eff;
     color: #fefefe;
   }
 `;
@@ -79,20 +97,16 @@ const RecentHistory = (props) => {
   const { recentHistory } = calculateRecentHistory(games);
 
   const historyDayClicked = (achievements) => {
-    dispatch(setShowHistoryModal(achievements));
+    // dispatch(setShowHistoryModal(achievements));
   };
 
   return (
     <Container onClick={() => {}}>
       <LevelFragment>
         <Header>
-          <HiOutlineChevronDoubleUp
-            style={{ marginRight: "0.5rem", color: "#6cff5c" }}
-          />
-          <Title>HISTORY</Title>
-          <HiOutlineChevronDoubleUp
-            style={{ marginLeft: "0.5rem", color: "#6cff5c" }}
-          />
+          <IconStart>{getIcon("sidebartitle")}</IconStart>
+          <Title>History</Title>
+          <IconEnd>{getIcon("sidebartitle")}</IconEnd>
         </Header>
         <HistoryContainer>
           {Object.keys(recentHistory).map((key, index) => {

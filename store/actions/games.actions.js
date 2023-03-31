@@ -19,6 +19,15 @@ export const actionFetchAllGames = () => {
   };
 };
 
+export const actionAchievementTogglePhaseVisibility = (isVisible) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.ACHIEVEMENT_TOGGLE_PHASE_VISIBILITY,
+      payload: isVisible,
+    });
+  };
+};
+
 export const actionGameSelectPhaseActive = (phase) => {
   return (dispatch) => {
     return dispatch({

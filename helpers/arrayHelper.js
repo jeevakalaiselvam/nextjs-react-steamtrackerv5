@@ -1,0 +1,26 @@
+import {
+  PHASE_ALL,
+  PHASE_ALL_TITLE,
+  PHASE_EASY,
+  PHASE_EASY_TITLE,
+  PHASE_GRIND,
+  PHASE_GRIND_TITLE,
+  PHASE_HARD,
+  PHASE_HARD_TITLE,
+  PHASE_MISSABLE,
+  PHASE_MISSABLE_TITLE,
+  PHASE_ONLINE,
+  PHASE_ONLINE_TITLE,
+  PHASE_STORY,
+  PHASE_STORY_TITLE,
+} from "@/helpers/constantHelper";
+
+export const phaseItems = [
+  { id: PHASE_ALL, title: PHASE_ALL_TITLE },
+  { id: PHASE_STORY, title: PHASE_STORY_TITLE },
+  { id: PHASE_EASY, title: PHASE_EASY_TITLE },
+  { id: PHASE_MISSABLE, title: PHASE_MISSABLE_TITLE },
+  { id: PHASE_HARD, title: PHASE_HARD_TITLE },
+  { id: PHASE_GRIND, title: PHASE_GRIND_TITLE },
+  { id: PHASE_ONLINE, title: PHASE_ONLINE_TITLE },
+];

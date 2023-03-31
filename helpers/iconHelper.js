@@ -7,20 +7,15 @@ import {
   FaTrophy,
 } from "react-icons/fa";
 import { BsTrophyFill } from "react-icons/bs";
+import { TbRefresh } from "react-icons/tb";
 import {
-  TbAB,
-  TbArrowsMaximize,
-  TbCircle,
-  TbDialpad,
-  TbPlus,
-  TbRefresh,
-} from "react-icons/tb";
-import {
-  HiColorSwatch,
   HiFolderAdd,
   HiLightningBolt,
+  HiOutlineViewList,
   HiTicket,
   HiViewBoards,
+  HiViewGrid,
+  HiViewList,
 } from "react-icons/hi";
 
 export const getIcon = (type, color) => {
@@ -41,6 +36,10 @@ export const getIcon = (type, color) => {
       return <TbRefresh />;
     case "add":
       return <FaPlusSquare />;
+    case "phaseactivate":
+      return <HiViewList />;
+    case "sidebartitle":
+      return <HiOutlineViewList />;
     default:
       return <AiFillGold />;
   }

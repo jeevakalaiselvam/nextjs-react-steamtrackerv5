@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   },
   phaseInfo: {},
   phaseActive: PHASE_ALL,
+  achievementPhaseVisible: false,
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -33,6 +34,12 @@ const reducer = (state = INITIAL_STATE, action) => {
             ],
           },
         },
+      };
+
+    case TYPES.ACHIEVEMENT_TOGGLE_PHASE_VISIBILITY:
+      return {
+        ...state,
+        achievementPhaseVisible: payload,
       };
 
     case TYPES.GAME_SELECT_PHASE_ACTIVE:

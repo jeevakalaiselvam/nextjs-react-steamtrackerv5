@@ -2,11 +2,14 @@ import {
   getColorForPercentage,
   getXPForPercentage,
 } from "@/helpers/achievementHelper";
+import { phaseItems } from "@/helpers/arrayHelper";
 import { getIcon } from "@/helpers/iconHelper";
+import { actionAchievementTogglePhaseVisibility } from "@/store/actions/games.actions";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import PhaseButton from "./PhaseButton";
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +19,7 @@ const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
   margin: ${(props) => props.margin ?? "1rem 1rem 0rem 0rem"};
   border-radius: 4px;
-  padding: 1rem;
+  padding: 1rem 1rem 2.5rem 1rem;
   align-self: stretch;
   opacity: ${(props) => (props.achieved ? "0.15" : "1")};
   position: relative;
@@ -104,11 +107,13 @@ export default function AchievementCard({
   margin,
   width,
 }) {
-  const router = useRouter();
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
-  const { games, preferences, hiddenDescriptions } = steamtracker;
+  const { games, preferences, hiddenDescriptions, achievementPhaseVisible } =
+    steamtracker;
   const { selectedGame, gameBacklogSort } = preferences;
+
+  const [hovered, setHovered] = useState(false);
 
   const {
     name,
@@ -123,6 +128,12 @@ export default function AchievementCard({
 
   return (
     <Container
+      onMouseEnter={() => {
+        setHovered(true);
+      }}
+      onMouseLeave={() => {
+        setHovered(false);
+      }}
       achieved={!disableOpacity && achieved}
       margin={margin}
       width={width}
@@ -142,6 +153,50 @@ export default function AchievementCard({
         <XPData>{getXPForPercentage(percentage)}</XPData>
         <XPIcon>{getIcon("achievement")}</XPIcon>
       </XPContainer>
+      <PhaseActivate
+        onClick={() => {
+          dispatch(
+            actionAchievementTogglePhaseVisibility(!achievementPhaseVisible)
+          );
+        }}
+      >
+        {getIcon("phaseactivate")}
+      </PhaseActivate>
+      {hovered && achievementPhaseVisible && (
+        <PhaseSelection>
+          {phaseItems.map((phase) => {
+            return <PhaseButton phase={phase} />;
+          })}
+        </PhaseSelection>
+      )}
     </Container>
   );
 }
+
+const PhaseSelection = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 1rem;
+  display: flex;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(2px);
+`;
+
+const PhaseActivate = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-1px);
+
+  &:hover {
+    color: #009eff;
+  }
+`;
