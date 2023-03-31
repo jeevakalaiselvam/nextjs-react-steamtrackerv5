@@ -23,7 +23,7 @@ const Container = styled.div`
   align-items: flex-start;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.2);
-  margin: ${(props) => props.margin ?? "1rem 1rem 0rem 0rem"};
+  margin: ${(props) => props.margin ?? "0.5rem 0.5rem 0rem 0rem"};
   border-radius: 4px;
   align-self: stretch;
   padding: 1rem 1rem 3rem 1rem;

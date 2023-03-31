@@ -281,7 +281,7 @@ export default function GameRight() {
                   key={achievement.name}
                   gameId={game.id}
                   disableOpacity={true}
-                  margin={"1rem 0rem 0rem 0rem"}
+                  margin={"0.5rem 0rem 0rem 0rem"}
                   width={"370px"}
                 />
               );
