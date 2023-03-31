@@ -41,10 +41,6 @@ const Title = styled.div`
   text-align: center;
   color: #fefefe;
   padding: 0.5rem 1rem;
-
-  &:hover {
-    color: ;
-  }
 `;
 
 export default function GameCard({ game, height }) {

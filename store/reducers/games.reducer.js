@@ -9,16 +9,18 @@ const INITIAL_STATE = {
   preferences: {
     themeGameId: 1328670,
     selectedGame: "",
+    selectedAchievement: {},
     selectedGameAll: {},
     gameBacklogSort: "",
     gameBacklogFilter: "",
     gameUnlockType: "",
-    gameUnlockViewType: "",
+    gameRightViewType: "",
   },
   phaseInfo: {},
   phaseActive: PHASE_ALL,
   achievementPhaseVisible: false,
   pinnedAchievements: [],
+  journal: {},
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -48,17 +50,29 @@ const reducer = (state = INITIAL_STATE, action) => {
         achievementId
       );
 
+    case TYPES.ACHIEVEMENT_SELECTED:
+      return {
+        ...state,
+        preferences: {
+          ...(state?.preferences ?? {}),
+          selectedAchievement: payload,
+        },
+      };
+
     case TYPES.ACHIEVEMENT_ADD_PINNED:
       return {
         ...state,
-        pinnedAchievements: [...(state?.pinnedAchievements ?? []), payload],
+        pinnedAchievements: [
+          ...(state?.pinnedAchievements ?? []),
+          payload.achievementId,
+        ],
       };
 
     case TYPES.ACHIEVEMENT_REMOVE_PINNED:
       return {
         ...state,
         pinnedAchievements: (state?.pinnedAchievements ?? []).filter(
-          (achievement) => achievement != payload
+          (achievement) => achievement.name != payload.achievementId
         ),
       };
 
@@ -72,6 +86,15 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         phaseActive: payload,
+      };
+
+    case TYPES.ACHIEVEMENT_ADD_JOURNAL:
+      return {
+        ...state,
+        journal: {
+          ...(state?.journal ?? {}),
+          [payload?.achievementId]: payload.journalData,
+        },
       };
 
     case TYPES.SET_HIDDEN_DESC_GAME:
@@ -92,12 +115,12 @@ const reducer = (state = INITIAL_STATE, action) => {
         },
       };
 
-    case TYPES.GAME_UNLOCK_VIEW_TYPE_CHANGE:
+    case TYPES.GAME_RIGHT_VIEW_TYPE_CHANGE:
       return {
         ...state,
         preferences: {
           ...(state?.preferences ?? {}),
-          gameUnlockViewType: payload,
+          gameRightViewType: payload,
         },
       };
 

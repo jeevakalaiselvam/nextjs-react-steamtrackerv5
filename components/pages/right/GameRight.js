@@ -4,8 +4,12 @@ import {
   MONTH,
   TODAY,
 } from "@/helpers/achievementHelper";
+import { gameRightTabs } from "@/helpers/arrayHelper";
 import { RARE_COLOR } from "@/helpers/colorHelper";
 import {
+  GAME_RIGHT_TAB_JOURNAL,
+  GAME_RIGHT_TAB_PINNED,
+  GAME_RIGHT_TAB_UNLOCKS,
   GAME_UNLOCK_TYPE_ALL,
   GAME_UNLOCK_TYPE_MONTH,
   GAME_UNLOCK_TYPE_TODAY,
@@ -15,13 +19,14 @@ import {
 } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
-  actionGameUnlockViewTypeChange,
+  actionAchievementAddJournal,
+  actionGameRightTypeChange,
   actionRefreshGameData,
   actionUnlockedTypeChange,
 } from "@/store/actions/games.actions";
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -48,8 +53,7 @@ const Title = styled.div`
   display: flex;
   align-content: center;
   justify-content: center;
-  flex: 2;
-  padding: 1rem;
+  padding: 0.5rem;
   font-size: 1.5rem;
 
   &:hover {
@@ -160,8 +164,13 @@ export default function GameRight() {
   const router = useRouter();
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
-  const { games, preferences, pinnedAchievements } = steamtracker;
-  const { selectedGame, gameUnlockType, gameUnlockViewType } = preferences;
+  const { games, preferences, pinnedAchievements, journal } = steamtracker;
+  const {
+    selectedGame,
+    selectedAchievement,
+    gameUnlockType,
+    gameRightViewType,
+  } = preferences;
 
   const game = games.find((g) => g.id == selectedGame);
   const { gameId } = router.query;
@@ -184,11 +193,6 @@ export default function GameRight() {
     GAME_UNLOCK_TYPE_ALL: "Unlocked - All",
   };
 
-  const gameViewTypeMap = {
-    GAME_UNLOCK_VIEW_TYPE_UNLOCK: "PINNED",
-    GAME_UNLOCK_VIEW_TYPE_PINNED: "UNLOCKED",
-  };
-
   const unlockTypeChange = () => {
     if ((gameUnlockType ?? GAME_UNLOCK_TYPE_TODAY) == GAME_UNLOCK_TYPE_TODAY) {
       dispatch(actionUnlockedTypeChange(GAME_UNLOCK_TYPE_WEEK));
@@ -207,6 +211,7 @@ export default function GameRight() {
   const [refreshing, setRefreshing] = useState(false);
 
   const refreshClickHandler = async () => {
+    dispatch(actionGameRightTypeChange(GAME_RIGHT_TAB_UNLOCKS));
     setRefreshing(true);
     const response = await axios.get(`/api/refresh/${gameId}`);
     const gameRefreshedData = response.data.data;
@@ -214,36 +219,54 @@ export default function GameRight() {
     setRefreshing(false);
   };
 
+  const gameTabClicked = (rightTab) => {
+    const { id, title } = rightTab;
+    dispatch(actionGameRightTypeChange(id));
+  };
+
+  const [saveText, setSaveText] = useState("SAVE");
+  const [journalData, setJournalData] = useState(
+    (journal ?? {})?.[selectedAchievement?.name] ?? ""
+  );
+
+  const journalDataChanged = (e) => {
+    setJournalData(e.target.value);
+  };
+
+  const saveJournalForAchievement = () => {
+    setSaveText("SAVING..");
+    dispatch(
+      actionAchievementAddJournal(selectedAchievement?.name, journalData)
+    );
+    setTimeout(() => {
+      setSaveText("SAVED!!");
+    }, 500);
+    setTimeout(() => {
+      setSaveText("SAVE");
+    }, 1000);
+  };
+
+  useEffect(() => {
+    setJournalData((journal ?? {})?.[selectedAchievement?.name] ?? "");
+  }, [(journal ?? {})?.[selectedAchievement?.name] ?? ""]);
+
   return (
     <Container>
       <Header>
-        <ViewType
-          onClick={() => {
-            dispatch(
-              actionGameUnlockViewTypeChange(
-                gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_UNLOCK ??
-                  GAME_UNLOCK_VIEW_TYPE_UNLOCK
-                  ? GAME_UNLOCK_VIEW_TYPE_PINNED
-                  : GAME_UNLOCK_VIEW_TYPE_UNLOCK
-              )
-            );
-          }}
-        >
-          {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_UNLOCK && (
-            <TypeIcon>{getIcon("unlockedonly")}</TypeIcon>
-          )}
-          {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_PINNED && (
-            <TypeIcon>{getIcon("pinnedonly")}</TypeIcon>
-          )}
-        </ViewType>
-        {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_UNLOCK && (
-          <Title onClick={unlockTypeChange} color={RARE_COLOR}>
-            {unlockTextMap[gameUnlockType ?? GAME_UNLOCK_TYPE_TODAY]}
-          </Title>
-        )}
-        {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_PINNED && (
-          <Title color={RARE_COLOR}>Pinned Achievements</Title>
-        )}
+        {gameRightTabs.map((gameRightTab) => {
+          const { id, title } = gameRightTab;
+          return (
+            <PhaseItem
+              active={gameRightViewType == id}
+              onClick={() => {
+                gameTabClicked(gameRightTab);
+              }}
+            >
+              {title}
+            </PhaseItem>
+          );
+        })}
+
         <Refresh>
           <InnerIcon
             color={RARE_COLOR}
@@ -255,7 +278,12 @@ export default function GameRight() {
         </Refresh>
       </Header>
       <UnlockedAchievement>
-        {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_UNLOCK &&
+        {gameRightViewType == GAME_RIGHT_TAB_UNLOCKS && (
+          <Title onClick={unlockTypeChange} color={RARE_COLOR}>
+            {unlockTextMap[gameUnlockType ?? GAME_UNLOCK_TYPE_TODAY]}
+          </Title>
+        )}
+        {gameRightViewType == GAME_RIGHT_TAB_UNLOCKS &&
           achievementsUnlockedToday.map((achievement) => {
             return (
               <AchievementCard
@@ -268,7 +296,7 @@ export default function GameRight() {
               />
             );
           })}
-        {gameUnlockViewType == GAME_UNLOCK_VIEW_TYPE_PINNED &&
+        {gameRightViewType == GAME_RIGHT_TAB_PINNED &&
           game?.achievements
             .sort((ach1, ach2) => ach2.percentage - ach1.percentage)
             .filter((achievement) =>
@@ -286,7 +314,94 @@ export default function GameRight() {
                 />
               );
             })}
+        {gameRightViewType == GAME_RIGHT_TAB_JOURNAL && (
+          <JournalContainer>
+            <JournalHeader>
+              <JournalTitle>Journal Entry</JournalTitle>
+              <JournalSave>
+                <SaveButton onClick={saveJournalForAchievement}>
+                  {saveText}
+                </SaveButton>
+              </JournalSave>
+            </JournalHeader>
+            <textarea
+              value={journalData}
+              placeholder={"No Journal"}
+              onChange={journalDataChanged}
+            />
+          </JournalContainer>
+        )}
       </UnlockedAchievement>
     </Container>
   );
 }
+
+const PhaseItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.25rem 0.5rem;
+  border-bottom: ${(props) =>
+    props.active ? "2px solid #009eff" : "2px solid #009eff00"};
+  border-radius: 4px 4px 0px 0px;
+  margin-right: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    border-bottom: 2px solid #009eff;
+  }
+`;
+
+const JournalContainer = styled.div`
+  display: flex;
+  min-width: 380px;
+  align-items: center;
+  min-height: 95vh;
+  max-height: 95vh;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  & textarea {
+    min-width: 100%;
+    min-height: 92vh;
+    max-height: 92vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    outline: none;
+    border: none;
+    padding: 1rem;
+  }
+`;
+
+const JournalHeader = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+const JournalTitle = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  padding: 0.5rem;
+  align-items: center;
+`;
+
+const JournalSave = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  flex: 1;
+`;
+
+const SaveButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  padding: 0.1rem 0.5rem;
+  background-color: #009eff;
+  cursor: pointer;
+`;

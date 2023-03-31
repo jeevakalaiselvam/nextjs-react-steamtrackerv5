@@ -27,3 +27,17 @@ export const phaseItems = [
   { id: PHASE_GRIND, title: PHASE_GRIND_TITLE },
   { id: PHASE_ONLINE, title: PHASE_ONLINE_TITLE },
 ];
+
+export const GAME_RIGHT_TAB_UNLOCKS = "GAME_RIGHT_TAB_UNLOCKS";
+export const GAME_RIGHT_TAB_PINNED = "GAME_RIGHT_TAB_PINNED";
+export const GAME_RIGHT_TAB_JOURNAL = "GAME_RIGHT_TAB_JOURNAL";
+
+export const GAME_RIGHT_TAB_UNLOCKS_TITLE = "Unlocks";
+export const GAME_RIGHT_TAB_PINNED_TITLE = "Pinned";
+export const GAME_RIGHT_TAB_JOURNAL_TITLE = "Journal";
+
+export const gameRightTabs = [
+  { id: GAME_RIGHT_TAB_UNLOCKS, title: GAME_RIGHT_TAB_UNLOCKS_TITLE },
+  { id: GAME_RIGHT_TAB_PINNED, title: GAME_RIGHT_TAB_PINNED_TITLE },
+  { id: GAME_RIGHT_TAB_JOURNAL, title: GAME_RIGHT_TAB_JOURNAL_TITLE },
+];

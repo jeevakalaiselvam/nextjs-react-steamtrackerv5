@@ -6,6 +6,7 @@ import { phaseItems } from "@/helpers/arrayHelper";
 import { PHASE_ALL, PHASE_ALL_TITLE } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
+  actionAchievementSelected,
   actionAchievementTogglePhaseVisibility,
   actionAddAchievementPinnned,
   actionGameAddAchievementPhase,
@@ -173,6 +174,9 @@ export default function AchievementCard({
       }}
       onMouseLeave={() => {
         setHovered(false);
+      }}
+      onClick={() => {
+        dispatch(actionAchievementSelected(achievement));
       }}
       achieved={!disableOpacity && achieved}
       margin={margin}

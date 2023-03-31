@@ -31,6 +31,15 @@ export const actionRefreshGameData = (gameId, gameRefreshedData) => {
   };
 };
 
+export const actionAchievementSelected = (achievement) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.ACHIEVEMENT_SELECTED,
+      payload: achievement,
+    });
+  };
+};
+
 export const actionAchievementTogglePhaseVisibility = (isVisible) => {
   return (dispatch) => {
     return dispatch({
@@ -99,6 +108,24 @@ export const actionUnlockedTypeChange = (unlockType) => {
     return dispatch({
       type: TYPES.GAME_UNLOCKED_TYPE_CHANGE,
       payload: unlockType,
+    });
+  };
+};
+
+export const actionGameRightTypeChange = (unlockType) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.GAME_RIGHT_VIEW_TYPE_CHANGE,
+      payload: unlockType,
+    });
+  };
+};
+
+export const actionAchievementAddJournal = (achievementId, journalData) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.ACHIEVEMENT_ADD_JOURNAL,
+      payload: { achievementId, journalData },
     });
   };
 };
