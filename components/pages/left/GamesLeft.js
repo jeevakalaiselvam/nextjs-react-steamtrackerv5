@@ -1,4 +1,5 @@
 import ProfileImage from "@/components/atoms/Profile";
+import RecentHistory from "@/components/atoms/RecentHistory";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
@@ -19,7 +20,6 @@ const Container = styled.div`
 
 export default function GamesLeftSidebar() {
   const router = useRouter();
-  const { gameId } = router.query;
 
   return (
     <Container>
@@ -28,6 +28,7 @@ export default function GamesLeftSidebar() {
         profileImageLink="https://avatars.cloudflare.steamstatic.com/3984d41a867b9b4eca056cdfcd1134bd591d9100_full.jpg"
       />
       <GamesPageMenu />
+      <RecentHistory />
     </Container>
   );
 }
