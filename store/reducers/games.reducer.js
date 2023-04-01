@@ -62,17 +62,14 @@ const reducer = (state = INITIAL_STATE, action) => {
     case TYPES.ACHIEVEMENT_ADD_PINNED:
       return {
         ...state,
-        pinnedAchievements: [
-          ...(state?.pinnedAchievements ?? []),
-          payload.achievementId,
-        ],
+        pinnedAchievements: [...(state?.pinnedAchievements ?? []), payload],
       };
 
     case TYPES.ACHIEVEMENT_REMOVE_PINNED:
       return {
         ...state,
         pinnedAchievements: (state?.pinnedAchievements ?? []).filter(
-          (achievement) => achievement.name != payload.achievementId
+          (achievement) => achievement != payload
         ),
       };
 
