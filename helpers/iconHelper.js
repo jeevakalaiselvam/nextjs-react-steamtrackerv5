@@ -6,21 +6,14 @@ import {
   FaPlusSquare,
   FaTrophy,
 } from "react-icons/fa";
-import { BsTrophyFill } from "react-icons/bs";
-import { TbRefresh } from "react-icons/tb";
+import { TbRefresh, TbRefreshDot } from "react-icons/tb";
 import {
-  HiAdjustments,
   HiExclamationCircle,
   HiFolderAdd,
   HiLightningBolt,
-  HiLocationMarker,
-  HiOutlineViewList,
-  HiPencilAlt,
+  HiOutlineQuestionMarkCircle,
   HiShieldCheck,
   HiStar,
-  HiTicket,
-  HiViewBoards,
-  HiViewGrid,
   HiViewList,
 } from "react-icons/hi";
 
@@ -45,7 +38,7 @@ export const getIcon = (type, color) => {
     case "phaseactivate":
       return <HiViewList />;
     case "sidebartitle":
-      return <HiOutlineViewList />;
+      return <HiOutlineQuestionMarkCircle />;
     case "view":
       return <HiExclamationCircle />;
     case "unlockedonly":

@@ -25,6 +25,7 @@ const Container = styled.div`
 const LevelFragment = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
 `;
@@ -38,8 +39,8 @@ const Header = styled.div`
 
 const IconStart = styled.div`
   display: flex;
-  color: #009eff;
   align-items: center;
+  color: #009eff;
   justify-content: center;
   flex: 1;
   font-size: 1.5rem;
@@ -48,8 +49,8 @@ const IconStart = styled.div`
 const IconEnd = styled.div`
   display: flex;
   align-items: center;
-  color: #009eff;
   justify-content: center;
+  color: #009eff;
   flex: 1;
   font-size: 1.5rem;
 `;
@@ -62,76 +63,31 @@ const Title = styled.div`
   font-size: 1.5rem;
 `;
 
-const HistoryContainer = styled.div`
+const LevelContainer = styled.div`
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-  padding: 1rem 0.25rem;
-  overflow: scroll;
+  padding: 1rem 0.25rem; ;
 `;
 
-const HistoryItem = styled.div`
-  display: flex;
-  width: 25px;
-  height: 25px;
-  align-items: center;
-  margin: 0.5rem;
-  flex-direction: row;
-  justify-content: center;
-  padding: 0.5rem;
-  background-color: ${(props) =>
-    props.current ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0.2)"};
-  color: ${(props) => (props.current ? "#fefefe" : "#737c9d")};
-  opacity: ${(props) => (props.transparent ? "0.25" : "1.0")};
-  &:hover {
-    background-color: #009eff;
-    color: #fefefe;
-  }
-`;
-
-const RecentHistory = (props) => {
+const ProfileLevel = (props) => {
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
   const { games } = steamtracker;
-
-  const { recentHistory } = calculateRecentHistory(games);
-
-  const historyDayClicked = (achievements) => {
-    // dispatch(setShowHistoryModal(achievements));
-  };
 
   return (
     <Container onClick={() => {}}>
       <LevelFragment>
         <Header>
           <IconStart>{getIcon("sidebartitle")}</IconStart>
-          <Title>History</Title>
+          <Title>Level Stats</Title>
           <IconEnd>{getIcon("sidebartitle")}</IconEnd>
         </Header>
-        <HistoryContainer>
-          {Object.keys(recentHistory).map((key, index) => {
-            return (
-              <HistoryItem
-                transparent={recentHistory[key].length == 0}
-                id={index}
-                current={false}
-                onClick={() => {
-                  historyDayClicked(
-                    recentHistory[key] ?? 0,
-                    recentHistory[key][0]?.unlocktime ?? ""
-                  );
-                }}
-              >
-                {recentHistory[key].length}
-              </HistoryItem>
-            );
-          })}
-        </HistoryContainer>
+        <LevelContainer></LevelContainer>
       </LevelFragment>
     </Container>
   );
 };
 
-export default RecentHistory;
+export default ProfileLevel;

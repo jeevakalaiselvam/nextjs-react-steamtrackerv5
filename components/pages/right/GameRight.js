@@ -101,8 +101,9 @@ const Refresh = styled.div`
 const InnerIcon = styled.div`
   display: flex;
   align-content: center;
-  justify-content: flex-end;
-  font-size: 1.75rem;
+  padding: 0.25rem;
+  justify-content: center;
+  font-size: 2rem;
 
   -webkit-animation: ${(props) =>
     props.rotate ? "rotating 0.25s linear infinite" : ""};
@@ -121,9 +122,9 @@ const InnerIcon = styled.div`
       transform: rotate(0deg);
     }
     to {
-      -webkit-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      transform: rotate(360deg);
+      -webkit-transform: rotate(-360deg);
+      -o-transform: rotate(-360deg);
+      transform: rotate(-360deg);
     }
   }
   @keyframes rotating {
@@ -135,11 +136,11 @@ const InnerIcon = styled.div`
       transform: rotate(0deg);
     }
     to {
-      -ms-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -webkit-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      transform: rotate(360deg);
+      -ms-transform: rotate(-360deg);
+      -moz-transform: rotate(-360deg);
+      -webkit-transform: rotate(-360deg);
+      -o-transform: rotate(-360deg);
+      transform: rotate(-360deg);
     }
   }
 
@@ -211,7 +212,6 @@ export default function GameRight() {
   const [refreshing, setRefreshing] = useState(false);
 
   const refreshClickHandler = async () => {
-    dispatch(actionGameRightTypeChange(GAME_RIGHT_TAB_UNLOCKS));
     setRefreshing(true);
     const response = await axios.get(`/api/refresh/${gameId}`);
     const gameRefreshedData = response.data.data;
