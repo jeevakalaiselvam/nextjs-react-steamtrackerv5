@@ -30,7 +30,7 @@ export const filterGamesForCategory = (games, categoryId) => {
   switch (categoryId) {
     case BACKLOG:
       filteredGamesForCategory = games.filter((game) => {
-        if (game.completion > 0 && game.completion < 10) {
+        if (game.completion >= 0 && game.completion < 10) {
           gamesCountForCategory++;
           return true;
         }
