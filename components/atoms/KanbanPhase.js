@@ -132,11 +132,11 @@ export default function KanbanPhase({ phase, title }) {
             .filter(
               (ach) =>
                 ach.achieved != 1 &&
-                !(phaseInfo[id][PHASE_EASY] ?? []).includes(name) &&
-                !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(name) &&
-                !(phaseInfo[id][PHASE_GRIND] ?? []).includes(name) &&
-                !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(name) &&
-                !(phaseInfo[id][PHASE_HARD] ?? []).includes(name)
+                !(phaseInfo[id][PHASE_EASY] ?? []).includes(ach.name) &&
+                !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(ach.name) &&
+                !(phaseInfo[id][PHASE_GRIND] ?? []).includes(ach.name) &&
+                !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(ach.name) &&
+                !(phaseInfo[id][PHASE_HARD] ?? []).includes(ach.name)
             )
             .map((achievement) => {
               return (
