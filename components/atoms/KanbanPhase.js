@@ -19,7 +19,6 @@ const KanbanItemContainer = styled.div`
   align-content: center;
   justify-content: flex-start;
   flex-direction: column;
-  margin-right: 1rem;
 `;
 
 const KanbanTitle = styled.div`
@@ -32,8 +31,9 @@ const KanbanTitle = styled.div`
 const KanbanCards = styled.div`
   display: flex;
   align-items: center;
-  flex: 1;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  width: 100%;
   flex-direction: column;
   overflow: scroll;
   min-height: 90vh;
@@ -145,7 +145,7 @@ export default function KanbanPhase({ phase, title }) {
                   key={achievement.name}
                   gameId={id}
                   width={"100%"}
-                  margin={"0.5rem 0rem"}
+                  margin={"0.3rem 0rem"}
                 />
               );
             })}
@@ -159,7 +159,7 @@ export default function KanbanPhase({ phase, title }) {
                   key={achievement.name}
                   gameId={id}
                   width={"100%"}
-                  margin={"0.5rem 0rem"}
+                  margin={"0.3rem 0rem"}
                 />
               );
             })}

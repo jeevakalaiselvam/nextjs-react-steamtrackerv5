@@ -59,7 +59,7 @@ const PinnedData = styled.div`
   align-items: center;
   font-size: 1.5rem;
   padding: 0.25rem;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.8);
   justify-content: center;
   position: absolute;
   bottom: 0;
