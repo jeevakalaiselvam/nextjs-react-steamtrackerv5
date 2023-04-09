@@ -23,7 +23,7 @@ const Container = styled.div`
   margin: ${(props) => props.margin ?? "0.5rem 0.5rem 0rem 0rem"};
   border-radius: 4px;
   align-self: stretch;
-  padding: 1rem 1rem 3rem 1rem;
+  padding: 1rem 1rem 1rem 1rem;
   opacity: ${(props) => (props.achieved ? "0.15" : "1")};
   position: relative;
 
@@ -46,21 +46,24 @@ const Icon = styled.div`
   align-items: center;
   justify-content: center;
   width: 60px;
+  background-color: red;
   height: 60px;
   background: url(${(props) => props.src});
   background-size: contain;
   background-repeat: no-repeat;
+  position: relative;
 `;
 
 const PinnedData = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.5rem;
+  padding: 0.25rem;
+  background-color: rgba(0, 0, 0, 0.25);
   justify-content: center;
-  padding: 0.25rem 0.5rem;
   position: absolute;
-  bottom: 0.5rem;
-  left: 1rem;
+  bottom: 0;
+  right: 0;
   color: ${(props) => (props.isPinned ? "#009EFF" : "")};
 
   &:hover {
@@ -180,6 +183,8 @@ export default function AchievementCard({
     }
   };
 
+  const [showPin, setShowPin] = useState(false);
+
   return (
     <Container
       ref={drag}
@@ -197,7 +202,24 @@ export default function AchievementCard({
       width={width}
     >
       <IconContainer>
-        <Icon src={icon}></Icon>
+        <Icon
+          src={icon}
+          onMouseEnter={() => {
+            setShowPin(true);
+          }}
+          onMouseLeave={() => {
+            setShowPin(false);
+          }}
+        >
+          {showPin && (
+            <PinnedData
+              isPinned={(pinnedAchievements ?? []).includes(name)}
+              onClick={addToPinOrRemoveHandler}
+            >
+              {getIcon("pinnedonly")}
+            </PinnedData>
+          )}
+        </Icon>
       </IconContainer>
       <Data>
         <Title
@@ -221,15 +243,6 @@ export default function AchievementCard({
         <XPData>{getXPForPercentage(percentage)}</XPData>
         <XPIcon>{getIcon("achievement")}</XPIcon>
       </XPContainer>
-
-      {!achievementPhaseVisible && (
-        <PinnedData
-          isPinned={(pinnedAchievements ?? []).includes(name)}
-          onClick={addToPinOrRemoveHandler}
-        >
-          {getIcon("pinnedonly")}
-        </PinnedData>
-      )}
     </Container>
   );
 }
