@@ -22,7 +22,8 @@ const Left = styled.div`
   min-height: 100vh;
   max-height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  min-width: ${(props) => (props.width ? props.width : "200px")};
+  min-width: ${(props) => (props.width ? props.width : "180px")};
+  max-width: ${(props) => (props.width ? props.width : "180px")};
   z-index: 3;
 `;
 

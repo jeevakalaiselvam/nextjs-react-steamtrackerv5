@@ -15,7 +15,7 @@ const Container = styled.div`
   justify-content: center;
   margin: 0.5rem;
   flex-direction: column;
-  width: 200px;
+  width: 95%;
   cursor: pointer;
   &:hover {
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);

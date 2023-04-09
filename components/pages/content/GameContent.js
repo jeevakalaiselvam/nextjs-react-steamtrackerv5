@@ -110,6 +110,7 @@ const KanbanCards = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
+  padding-left: 0.4rem;
   flex-direction: column;
   overflow: scroll;
   min-height: 100vh;
@@ -437,13 +438,23 @@ export default function GameContent() {
             <KanbanTitle>BACKLOG</KanbanTitle>
             <KanbanCards>
               {achievements
-                .filter((ach) => ach.achieved != 1)
+                .filter(
+                  (ach) =>
+                    ach.achieved != 1 &&
+                    !(phaseInfo[id][PHASE_EASY] ?? []).includes(name) &&
+                    !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(name) &&
+                    !(phaseInfo[id][PHASE_GRIND] ?? []).includes(name) &&
+                    !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(name) &&
+                    !(phaseInfo[id][PHASE_HARD] ?? []).includes(name)
+                )
                 .map((achievement) => {
                   return (
                     <AchievementCard
                       achievement={achievement}
                       key={achievement.name}
                       gameId={id}
+                      width={"275px"}
+                      margin={"0.5rem 0rem"}
                     />
                   );
                 })}
@@ -462,6 +473,8 @@ export default function GameContent() {
                       achievement={achievement}
                       key={achievement.name}
                       gameId={id}
+                      width={"275px"}
+                      margin={"0.5rem 0rem"}
                     />
                   );
                 })}
@@ -480,6 +493,48 @@ export default function GameContent() {
                       achievement={achievement}
                       key={achievement.name}
                       gameId={id}
+                      width={"275px"}
+                      margin={"0.5rem 0rem"}
+                    />
+                  );
+                })}
+            </KanbanCards>
+          </KanbanItemContainer>
+          <KanbanItemContainer>
+            <KanbanTitle>MISSABLE</KanbanTitle>
+            <KanbanCards>
+              {achievements
+                .filter(({ name }) =>
+                  (phaseInfo[id][PHASE_MISSABLE] ?? []).includes(name)
+                )
+                .map((achievement) => {
+                  return (
+                    <AchievementCard
+                      achievement={achievement}
+                      key={achievement.name}
+                      gameId={id}
+                      width={"275px"}
+                      margin={"0.5rem 0rem"}
+                    />
+                  );
+                })}
+            </KanbanCards>
+          </KanbanItemContainer>
+          <KanbanItemContainer>
+            <KanbanTitle>COLLECTIBLE</KanbanTitle>
+            <KanbanCards>
+              {achievements
+                .filter(({ name }) =>
+                  (phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(name)
+                )
+                .map((achievement) => {
+                  return (
+                    <AchievementCard
+                      achievement={achievement}
+                      key={achievement.name}
+                      gameId={id}
+                      width={"275px"}
+                      margin={"0.5rem 0rem"}
                     />
                   );
                 })}
@@ -498,6 +553,8 @@ export default function GameContent() {
                       achievement={achievement}
                       key={achievement.name}
                       gameId={id}
+                      width={"275px"}
+                      margin={"0.5rem 0rem"}
                     />
                   );
                 })}
@@ -516,6 +573,8 @@ export default function GameContent() {
                       achievement={achievement}
                       key={achievement.name}
                       gameId={id}
+                      width={"275px"}
+                      margin={"0.5rem 0rem"}
                     />
                   );
                 })}
