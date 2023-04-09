@@ -12,8 +12,10 @@ import {
   HiFolderAdd,
   HiLightningBolt,
   HiOutlineQuestionMarkCircle,
+  HiQuestionMarkCircle,
   HiShieldCheck,
   HiStar,
+  HiTicket,
   HiViewList,
 } from "react-icons/hi";
 
@@ -45,6 +47,8 @@ export const getIcon = (type, color) => {
       return <HiShieldCheck />;
     case "pinnedonly":
       return <HiStar />;
+    case "phase":
+      return <HiQuestionMarkCircle />;
     default:
       return <AiFillGold />;
   }

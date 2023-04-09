@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import AchievementCard from "./AchievementCard";
 import { useDrop } from "react-dnd";
+import { getIcon } from "@/helpers/iconHelper";
 
 const KanbanItemContainer = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ const KanbanTitle = styled.div`
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
+  opacity: 0.2;
   justify-content: center;
 `;
 const KanbanCards = styled.div`
@@ -37,6 +39,60 @@ const KanbanCards = styled.div`
   min-height: 90vh;
   max-height: 90vh;
   justify-content: flex-start;
+`;
+
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Star1 = styled.div`
+  display: flex;
+  margin-right: 0.25rem;
+  align-items: center;
+  font-size: 1rem;
+  justify-content: center;
+`;
+
+const Star2 = styled.div`
+  display: flex;
+  margin-right: 0.25rem;
+  align-items: center;
+  font-size: 1.5rem;
+  justify-content: center;
+`;
+
+const Star3 = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  margin-right: 0.5rem;
+  justify-content: center;
+`;
+
+const Star4 = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  font-size: 2rem;
+  justify-content: center;
+`;
+
+const Star5 = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 0.25rem;
+  font-size: 1.5rem;
+  justify-content: center;
+`;
+
+const Star6 = styled.div`
+  display: flex;
+  margin-left: 0.25rem;
+  font-size: 1rem;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default function KanbanPhase({ phase, title }) {
@@ -61,7 +117,15 @@ export default function KanbanPhase({ phase, title }) {
 
   return (
     <KanbanItemContainer ref={drop}>
-      <KanbanTitle>{!isActive ? title : title}</KanbanTitle>
+      <KanbanTitle>
+        <Star1>{getIcon("phase")}</Star1>
+        <Star2>{getIcon("phase")}</Star2>
+        <Star3>{getIcon("phase")}</Star3>
+        <Title>{title}</Title>
+        <Star4>{getIcon("phase")}</Star4>
+        <Star5>{getIcon("phase")}</Star5>
+        <Star6>{getIcon("phase")}</Star6>
+      </KanbanTitle>
       <KanbanCards>
         {phase == PHASE_ALL &&
           achievements
