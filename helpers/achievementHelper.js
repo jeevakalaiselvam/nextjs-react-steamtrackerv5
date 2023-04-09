@@ -278,9 +278,7 @@ export const addOrRemoveAchievementFromPhase = (
         ...(state.phaseInfo ?? {}),
         [gameId]: {
           ...(state.phaseInfo ?? {})[gameId],
-          [phase]: (
-            ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[phase] ?? []
-          ).filter((achievementPresent) => achievementPresent != achievementId),
+          [phase]: ((state.phaseInfo ?? {})?.[gameId] ?? {})?.[phase] ?? [],
         },
       },
     };
