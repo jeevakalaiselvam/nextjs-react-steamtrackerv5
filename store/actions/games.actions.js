@@ -58,6 +58,15 @@ export const actionGameSelectPhaseActive = (phase) => {
   };
 };
 
+export const actionTogglePlannerViewType = (viewType) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.CHANGE_PLANNER_VIEWTYPE,
+      payload: viewType,
+    });
+  };
+};
+
 export const actionGameUnlockViewTypeChange = (viewType) => {
   return (dispatch) => {
     return dispatch({

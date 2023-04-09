@@ -26,9 +26,12 @@ import {
   GAME_CATEGORY_MARVEL_TITLE,
   GAME_CATEGORY_RARE,
   GAME_CATEGORY_RARE_TITLE,
+  PLANNER_VIEWTYPE_KANBAN,
+  PLANNER_VIEWTYPE_SPLIT,
 } from "@/helpers/constantHelper";
 import { calculaNextStageForGame } from "@/helpers/gameHelper";
 import { getIcon } from "@/helpers/iconHelper";
+import { actionTogglePlannerViewType } from "@/store/actions/games.actions";
 import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +45,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const LeftEmpty = styled.div`
+const ViewType = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -105,7 +108,7 @@ export default function GameHeader() {
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
   const { games, preferences } = steamtracker;
-  const { selectedGame } = preferences;
+  const { selectedGame, plannerViewType } = preferences;
 
   const game = games?.find((game) => game.id == selectedGame);
 
@@ -144,9 +147,28 @@ export default function GameHeader() {
     },
   ];
 
+  const changePlannerViewType = () => {
+    switch (plannerViewType) {
+      case PLANNER_VIEWTYPE_SPLIT:
+        dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_KANBAN));
+        break;
+      case PLANNER_VIEWTYPE_KANBAN:
+        dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_SPLIT));
+        break;
+      default:
+        dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_SPLIT));
+        break;
+    }
+  };
+
   return (
     <Container>
-      <LeftEmpty></LeftEmpty>
+      <ViewType onClick={changePlannerViewType}>
+        {(plannerViewType ?? PLANNER_VIEWTYPE_SPLIT) ===
+          PLANNER_VIEWTYPE_KANBAN && <SwitchButton>SPLIT VIEW</SwitchButton>}
+        {(plannerViewType ?? PLANNER_VIEWTYPE_SPLIT) ===
+          PLANNER_VIEWTYPE_SPLIT && <SwitchButton>KANBAN VIEW</SwitchButton>}
+      </ViewType>
       <TrophyObtained>
         <TrophyFancy
           color={nextStage.OBTAINEDCOLOR}
@@ -174,3 +196,20 @@ export default function GameHeader() {
     </Container>
   );
 }
+
+const SwitchButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.25rem 0.5rem;
+  border-bottom: ${(props) =>
+    props.active ? "2px solid #009eff" : "2px solid #009eff00"};
+  border-radius: 4px 4px 0px 0px;
+  margin-right: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    border-bottom: 2px solid #009eff;
+  }
+`;

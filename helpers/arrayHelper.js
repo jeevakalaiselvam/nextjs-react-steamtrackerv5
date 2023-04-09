@@ -19,13 +19,13 @@ import {
 
 export const phaseItems = [
   { id: PHASE_ALL, title: PHASE_ALL_TITLE },
-  { id: PHASE_STORY, title: PHASE_STORY_TITLE },
+  // { id: PHASE_STORY, title: PHASE_STORY_TITLE },
   { id: PHASE_EASY, title: PHASE_EASY_TITLE },
   { id: PHASE_MISSABLE, title: PHASE_MISSABLE_TITLE },
-  { id: PHASE_COLLECTIBLE, title: PHASE_COLLECTIBLE_TITLE },
+  // { id: PHASE_COLLECTIBLE, title: PHASE_COLLECTIBLE_TITLE },
   { id: PHASE_HARD, title: PHASE_HARD_TITLE },
   { id: PHASE_GRIND, title: PHASE_GRIND_TITLE },
-  { id: PHASE_ONLINE, title: PHASE_ONLINE_TITLE },
+  // { id: PHASE_ONLINE, title: PHASE_ONLINE_TITLE },
 ];
 
 export const GAME_RIGHT_TAB_UNLOCKS = "GAME_RIGHT_TAB_UNLOCKS";

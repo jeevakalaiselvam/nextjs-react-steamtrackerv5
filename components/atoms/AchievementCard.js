@@ -251,12 +251,14 @@ const PhaseSelection = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 1rem;
+  margin-left: 1rem;
+  width: 100%;
   display: flex;
   margin-right: 1rem;
   margin-bottom: 0.5rem;
   align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   transform: translateY(2px);
   opacity: ${(props) => (props.hovered ? "1" : "0.25")};
 `;
@@ -267,6 +269,7 @@ const PhaseActivate = styled.div`
   right: 0;
   display: flex;
   margin-right: 0.5rem;
+  z-index: 1000;
   margin-bottom: 0.5rem;
   align-items: center;
   justify-content: center;

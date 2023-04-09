@@ -39,6 +39,8 @@ import {
   PHASE_MISSABLE,
   PHASE_ONLINE,
   PHASE_STORY,
+  PLANNER_VIEWTYPE_KANBAN,
+  PLANNER_VIEWTYPE_SPLIT,
 } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
@@ -78,6 +80,41 @@ const PhaseContainer = styled.div`
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.2);
   flex: 3;
+`;
+
+const KanbanContainer = styled.div`
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+`;
+
+const KanbanItemContainer = styled.div`
+  display: flex;
+  flex: 1;
+  align-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-right: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+`;
+
+const KanbanTitle = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  justify-content: center;
+`;
+const KanbanCards = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-direction: column;
+  overflow: scroll;
+  min-height: 100vh;
+  max-height: 100vh;
+  justify-content: flex-start;
 `;
 
 const BacklogHeader = styled.div`
@@ -168,7 +205,8 @@ export default function GameContent() {
   const steamtracker = useSelector((state) => state.steamtracker);
   const { games, preferences, hiddenDescriptions, phaseInfo, phaseActive } =
     steamtracker;
-  const { selectedGame, gameBacklogSort, gameBacklogFilter } = preferences;
+  const { selectedGame, gameBacklogSort, gameBacklogFilter, plannerViewType } =
+    preferences;
 
   const game = games?.find((game) => game.id == selectedGame);
 
@@ -217,7 +255,6 @@ export default function GameContent() {
     phaseInfo[id][PHASE_MISSABLE],
     phaseInfo[id][PHASE_GRIND],
     phaseInfo[id][PHASE_COLLECTIBLE],
-    phaseInfo[id][PHASE_EASY],
     phaseInfo[id][PHASE_HARD],
     phaseInfo[id][PHASE_ONLINE],
   ]);
@@ -299,47 +336,90 @@ export default function GameContent() {
 
   return (
     <Container>
-      <BacklogContainer>
-        <BacklogHeader>
-          <Title onClick={backlogSortChangeHandler}>
-            {backLogTitleMap[gameBacklogSort ?? GAME_BACKLOG_SORT_ALL]}
-          </Title>
-          <AchievementFilter>
-            {headerCategories.map((category) => {
-              const { type, title, color } = category;
+      {plannerViewType === PLANNER_VIEWTYPE_SPLIT && (
+        <BacklogContainer>
+          <BacklogHeader>
+            <Title onClick={backlogSortChangeHandler}>
+              {backLogTitleMap[gameBacklogSort ?? GAME_BACKLOG_SORT_ALL]}
+            </Title>
+            <AchievementFilter>
+              {headerCategories.map((category) => {
+                const { type, title, color } = category;
+                return (
+                  <AchievementStatus
+                    color={color}
+                    onClick={() => {
+                      achievementTypeFilterClicked(type);
+                    }}
+                  >
+                    <AchievementSelected
+                      color={gameBacklogFilter == type ? color : "#00000000"}
+                    ></AchievementSelected>
+                    <AchievementIcon color={color}>
+                      {getIcon("achievement")}
+                    </AchievementIcon>
+                    <AchievementCount color={color}>
+                      {
+                        getAchievementsForFilterType(
+                          filteredAchievementsForSortAndFilterOption(
+                            achievements,
+                            GAME_BACKLOG_SORT_LOCKED,
+                            GAME_BACKLOG_FILTER_ALL
+                          ),
+                          type
+                        ).length
+                      }
+                    </AchievementCount>
+                  </AchievementStatus>
+                );
+              })}
+            </AchievementFilter>
+          </BacklogHeader>
+          <BacklogContent>
+            <InnerList>
+              {filteredAchievements.map((achievement) => {
+                return (
+                  <AchievementCard
+                    achievement={achievement}
+                    key={achievement.name}
+                    gameId={id}
+                  />
+                );
+              })}
+            </InnerList>
+          </BacklogContent>
+        </BacklogContainer>
+      )}
+      {plannerViewType === PLANNER_VIEWTYPE_SPLIT && (
+        <PhaseContainer>
+          <PhaseHeader>
+            {phaseItems.map((phase) => {
+              const { id, title } = phase;
+              const phaseCount =
+                id !== PHASE_ALL
+                  ? achievements.filter((achievement) =>
+                      (phaseInfo?.[selectedGame]?.[id] ?? []).includes(
+                        achievement.name
+                      )
+                    ).length
+                  : achievements.filter(
+                      (achievement) => achievement.achieved != 1
+                    ).length;
+
               return (
-                <AchievementStatus
-                  color={color}
+                <PhaseItem
+                  active={phaseActive == id}
                   onClick={() => {
-                    achievementTypeFilterClicked(type);
+                    dispatch(actionGameSelectPhaseActive(id));
                   }}
                 >
-                  <AchievementSelected
-                    color={gameBacklogFilter == type ? color : "#00000000"}
-                  ></AchievementSelected>
-                  <AchievementIcon color={color}>
-                    {getIcon("achievement")}
-                  </AchievementIcon>
-                  <AchievementCount color={color}>
-                    {
-                      getAchievementsForFilterType(
-                        filteredAchievementsForSortAndFilterOption(
-                          achievements,
-                          GAME_BACKLOG_SORT_LOCKED,
-                          GAME_BACKLOG_FILTER_ALL
-                        ),
-                        type
-                      ).length
-                    }
-                  </AchievementCount>
-                </AchievementStatus>
+                  {title.toUpperCase()} - {phaseCount}
+                </PhaseItem>
               );
             })}
-          </AchievementFilter>
-        </BacklogHeader>
-        <BacklogContent>
-          <InnerList>
-            {filteredAchievements.map((achievement) => {
+          </PhaseHeader>
+          <PhaseContent>
+            {phaseFilteredAchievements.map((achievement) => {
               return (
                 <AchievementCard
                   achievement={achievement}
@@ -348,48 +428,101 @@ export default function GameContent() {
                 />
               );
             })}
-          </InnerList>
-        </BacklogContent>
-      </BacklogContainer>
-      <PhaseContainer>
-        <PhaseHeader>
-          {phaseItems.map((phase) => {
-            const { id, title } = phase;
-            const phaseCount =
-              id !== PHASE_ALL
-                ? achievements.filter((achievement) =>
-                    (phaseInfo?.[selectedGame]?.[id] ?? []).includes(
-                      achievement.name
-                    )
-                  ).length
-                : achievements.filter(
-                    (achievement) => achievement.achieved != 1
-                  ).length;
-
-            return (
-              <PhaseItem
-                active={phaseActive == id}
-                onClick={() => {
-                  dispatch(actionGameSelectPhaseActive(id));
-                }}
-              >
-                {title.toUpperCase()} - {phaseCount}
-              </PhaseItem>
-            );
-          })}
-        </PhaseHeader>
-        <PhaseContent>
-          {phaseFilteredAchievements.map((achievement) => {
-            return (
-              <AchievementCard
-                achievement={achievement}
-                key={achievement.name}
-                gameId={id}
-              />
-            );
-          })}
-        </PhaseContent>
-      </PhaseContainer>
+          </PhaseContent>
+        </PhaseContainer>
+      )}
+      {plannerViewType === PLANNER_VIEWTYPE_KANBAN && (
+        <KanbanContainer>
+          <KanbanItemContainer>
+            <KanbanTitle>BACKLOG</KanbanTitle>
+            <KanbanCards>
+              {achievements
+                .filter((ach) => ach.achieved != 1)
+                .map((achievement) => {
+                  return (
+                    <AchievementCard
+                      achievement={achievement}
+                      key={achievement.name}
+                      gameId={id}
+                    />
+                  );
+                })}
+            </KanbanCards>
+          </KanbanItemContainer>
+          <KanbanItemContainer>
+            <KanbanTitle>EASY</KanbanTitle>
+            <KanbanCards>
+              {achievements
+                .filter(({ name }) =>
+                  (phaseInfo[id][PHASE_EASY] ?? []).includes(name)
+                )
+                .map((achievement) => {
+                  return (
+                    <AchievementCard
+                      achievement={achievement}
+                      key={achievement.name}
+                      gameId={id}
+                    />
+                  );
+                })}
+            </KanbanCards>
+          </KanbanItemContainer>
+          <KanbanItemContainer>
+            <KanbanTitle>MISSABLE</KanbanTitle>
+            <KanbanCards>
+              {achievements
+                .filter(({ name }) =>
+                  (phaseInfo[id][PHASE_MISSABLE] ?? []).includes(name)
+                )
+                .map((achievement) => {
+                  return (
+                    <AchievementCard
+                      achievement={achievement}
+                      key={achievement.name}
+                      gameId={id}
+                    />
+                  );
+                })}
+            </KanbanCards>
+          </KanbanItemContainer>
+          <KanbanItemContainer>
+            <KanbanTitle>GRIND</KanbanTitle>
+            <KanbanCards>
+              {achievements
+                .filter(({ name }) =>
+                  (phaseInfo[id][PHASE_GRIND] ?? []).includes(name)
+                )
+                .map((achievement) => {
+                  return (
+                    <AchievementCard
+                      achievement={achievement}
+                      key={achievement.name}
+                      gameId={id}
+                    />
+                  );
+                })}
+            </KanbanCards>
+          </KanbanItemContainer>
+          <KanbanItemContainer>
+            <KanbanTitle>HARD</KanbanTitle>
+            <KanbanCards>
+              {achievements
+                .filter(({ name }) =>
+                  (phaseInfo[id][PHASE_HARD] ?? []).includes(name)
+                )
+                .map((achievement) => {
+                  return (
+                    <AchievementCard
+                      achievement={achievement}
+                      key={achievement.name}
+                      gameId={id}
+                    />
+                  );
+                })}
+            </KanbanCards>
+          </KanbanItemContainer>
+        </KanbanContainer>
+      )}
     </Container>
   );
 }

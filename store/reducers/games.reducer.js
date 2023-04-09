@@ -15,6 +15,7 @@ const INITIAL_STATE = {
     gameBacklogFilter: "",
     gameUnlockType: "",
     gameRightViewType: "",
+    plannerViewType: "",
   },
   phaseInfo: {},
   phaseActive: PHASE_ALL,
@@ -49,6 +50,15 @@ const reducer = (state = INITIAL_STATE, action) => {
         gameId,
         achievementId
       );
+
+    case TYPES.CHANGE_PLANNER_VIEWTYPE:
+      return {
+        ...state,
+        preferences: {
+          ...(state?.preferences ?? {}),
+          plannerViewType: payload,
+        },
+      };
 
     case TYPES.ACHIEVEMENT_SELECTED:
       return {
