@@ -2,21 +2,17 @@ import {
   getColorForPercentage,
   getXPForPercentage,
 } from "@/helpers/achievementHelper";
-import { phaseItems } from "@/helpers/arrayHelper";
-import { PHASE_ALL, PHASE_ALL_TITLE } from "@/helpers/constantHelper";
 import { getIcon } from "@/helpers/iconHelper";
 import {
   actionAchievementSelected,
-  actionAchievementTogglePhaseVisibility,
   actionAddAchievementPinnned,
   actionGameAddAchievementPhase,
   actionRemoveAchievementPinnned,
 } from "@/store/actions/games.actions";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import PhaseButton from "./PhaseButton";
+import { useDrag } from "react-dnd";
 
 const Container = styled.div`
   display: flex;
@@ -130,6 +126,23 @@ export default function AchievementCard({
   margin,
   width,
 }) {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "achievement",
+    item: { name: achievement.name },
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      if (item && dropResult) {
+        dispatch(
+          actionGameAddAchievementPhase(gameId, dropResult.name, item.name)
+        );
+      }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+      handlerId: monitor.getHandlerId(),
+    }),
+  }));
+
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
   const {
@@ -169,6 +182,7 @@ export default function AchievementCard({
 
   return (
     <Container
+      ref={drag}
       onMouseEnter={() => {
         setHovered(true);
       }}
@@ -207,34 +221,7 @@ export default function AchievementCard({
         <XPData>{getXPForPercentage(percentage)}</XPData>
         <XPIcon>{getIcon("achievement")}</XPIcon>
       </XPContainer>
-      <PhaseActivate
-        onClick={() => {
-          dispatch(
-            actionAchievementTogglePhaseVisibility(!achievementPhaseVisible)
-          );
-        }}
-      >
-        {getIcon("phaseactivate")}
-      </PhaseActivate>
-      {achievementPhaseVisible && (
-        <PhaseSelection hovered={hovered}>
-          {phaseItems.map((phase) => {
-            if (phase.title !== PHASE_ALL_TITLE) {
-              return (
-                <PhaseButton
-                  active={(
-                    (phaseInfo ?? {})?.[gameId]?.[phase.id] ?? []
-                  ).includes(name)}
-                  phase={phase}
-                  onClick={() => {
-                    phaseSelectedForAchievment(phase, selectedGame);
-                  }}
-                />
-              );
-            }
-          })}
-        </PhaseSelection>
-      )}
+
       {!achievementPhaseVisible && (
         <PinnedData
           isPinned={(pinnedAchievements ?? []).includes(name)}
@@ -246,36 +233,3 @@ export default function AchievementCard({
     </Container>
   );
 }
-
-const PhaseSelection = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  margin-left: 1rem;
-  width: 100%;
-  display: flex;
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  transform: translateY(2px);
-  opacity: ${(props) => (props.hovered ? "1" : "0.25")};
-`;
-
-const PhaseActivate = styled.div`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  margin-right: 0.5rem;
-  z-index: 1000;
-  margin-bottom: 0.5rem;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(-1px);
-
-  &:hover {
-    color: #009eff;
-  }
-`;

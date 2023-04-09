@@ -1,4 +1,5 @@
 import AchievementCard from "@/components/atoms/AchievementCard";
+import KanbanPhase from "@/components/atoms/KanbanPhase";
 import {
   filteredAchievementsForSortAndFilterOption,
   getAchievementsForFilterType,
@@ -90,34 +91,6 @@ const KanbanContainer = styled.div`
   width: 100%;
 `;
 
-const KanbanItemContainer = styled.div`
-  display: flex;
-  flex: 1;
-  align-content: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  margin-right: 1rem;
-  background-color: rgba(0, 0, 0, 0.2);
-`;
-
-const KanbanTitle = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  justify-content: center;
-`;
-const KanbanCards = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  padding-left: 0.4rem;
-  flex-direction: column;
-  overflow: scroll;
-  min-height: 100vh;
-  max-height: 100vh;
-  justify-content: flex-start;
-`;
-
 const BacklogHeader = styled.div`
   display: flex;
   align-items: center;
@@ -198,6 +171,17 @@ const AchievementSelected = styled.div`
   height: 5px;
   border-radius: 1rem;
   background-color: ${(props) => props.color ?? "#FEFEFE"};
+`;
+
+const KanbanItemContainer = styled.div`
+  display: flex;
+  min-width: 333px;
+  max-width: 333px;
+  align-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-right: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
 export default function GameContent() {
@@ -435,150 +419,22 @@ export default function GameContent() {
       {plannerViewType === PLANNER_VIEWTYPE_KANBAN && (
         <KanbanContainer>
           <KanbanItemContainer>
-            <KanbanTitle>BACKLOG</KanbanTitle>
-            <KanbanCards>
-              {achievements
-                .filter(
-                  (ach) =>
-                    ach.achieved != 1 &&
-                    !(phaseInfo[id][PHASE_EASY] ?? []).includes(name) &&
-                    !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(name) &&
-                    !(phaseInfo[id][PHASE_GRIND] ?? []).includes(name) &&
-                    !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(name) &&
-                    !(phaseInfo[id][PHASE_HARD] ?? []).includes(name)
-                )
-                .map((achievement) => {
-                  return (
-                    <AchievementCard
-                      achievement={achievement}
-                      key={achievement.name}
-                      gameId={id}
-                      width={"275px"}
-                      margin={"0.5rem 0rem"}
-                    />
-                  );
-                })}
-            </KanbanCards>
+            <KanbanPhase phase={PHASE_ALL} title={"BACKLOG"} />
           </KanbanItemContainer>
           <KanbanItemContainer>
-            <KanbanTitle>EASY</KanbanTitle>
-            <KanbanCards>
-              {achievements
-                .filter(({ name }) =>
-                  (phaseInfo[id][PHASE_EASY] ?? []).includes(name)
-                )
-                .map((achievement) => {
-                  return (
-                    <AchievementCard
-                      achievement={achievement}
-                      key={achievement.name}
-                      gameId={id}
-                      width={"275px"}
-                      margin={"0.5rem 0rem"}
-                    />
-                  );
-                })}
-            </KanbanCards>
+            <KanbanPhase phase={PHASE_EASY} title={"EASY"} />
           </KanbanItemContainer>
           <KanbanItemContainer>
-            <KanbanTitle>MISSABLE</KanbanTitle>
-            <KanbanCards>
-              {achievements
-                .filter(({ name }) =>
-                  (phaseInfo[id][PHASE_MISSABLE] ?? []).includes(name)
-                )
-                .map((achievement) => {
-                  return (
-                    <AchievementCard
-                      achievement={achievement}
-                      key={achievement.name}
-                      gameId={id}
-                      width={"275px"}
-                      margin={"0.5rem 0rem"}
-                    />
-                  );
-                })}
-            </KanbanCards>
+            <KanbanPhase phase={PHASE_MISSABLE} title={"MISSABLE"} />
           </KanbanItemContainer>
           <KanbanItemContainer>
-            <KanbanTitle>MISSABLE</KanbanTitle>
-            <KanbanCards>
-              {achievements
-                .filter(({ name }) =>
-                  (phaseInfo[id][PHASE_MISSABLE] ?? []).includes(name)
-                )
-                .map((achievement) => {
-                  return (
-                    <AchievementCard
-                      achievement={achievement}
-                      key={achievement.name}
-                      gameId={id}
-                      width={"275px"}
-                      margin={"0.5rem 0rem"}
-                    />
-                  );
-                })}
-            </KanbanCards>
+            <KanbanPhase phase={PHASE_COLLECTIBLE} title={"COLLECTIBLE"} />
           </KanbanItemContainer>
           <KanbanItemContainer>
-            <KanbanTitle>COLLECTIBLE</KanbanTitle>
-            <KanbanCards>
-              {achievements
-                .filter(({ name }) =>
-                  (phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(name)
-                )
-                .map((achievement) => {
-                  return (
-                    <AchievementCard
-                      achievement={achievement}
-                      key={achievement.name}
-                      gameId={id}
-                      width={"275px"}
-                      margin={"0.5rem 0rem"}
-                    />
-                  );
-                })}
-            </KanbanCards>
+            <KanbanPhase phase={PHASE_HARD} title={"HARD"} />
           </KanbanItemContainer>
           <KanbanItemContainer>
-            <KanbanTitle>GRIND</KanbanTitle>
-            <KanbanCards>
-              {achievements
-                .filter(({ name }) =>
-                  (phaseInfo[id][PHASE_GRIND] ?? []).includes(name)
-                )
-                .map((achievement) => {
-                  return (
-                    <AchievementCard
-                      achievement={achievement}
-                      key={achievement.name}
-                      gameId={id}
-                      width={"275px"}
-                      margin={"0.5rem 0rem"}
-                    />
-                  );
-                })}
-            </KanbanCards>
-          </KanbanItemContainer>
-          <KanbanItemContainer>
-            <KanbanTitle>HARD</KanbanTitle>
-            <KanbanCards>
-              {achievements
-                .filter(({ name }) =>
-                  (phaseInfo[id][PHASE_HARD] ?? []).includes(name)
-                )
-                .map((achievement) => {
-                  return (
-                    <AchievementCard
-                      achievement={achievement}
-                      key={achievement.name}
-                      gameId={id}
-                      width={"275px"}
-                      margin={"0.5rem 0rem"}
-                    />
-                  );
-                })}
-            </KanbanCards>
+            <KanbanPhase phase={PHASE_GRIND} title={"GRIND"} />
           </KanbanItemContainer>
         </KanbanContainer>
       )}

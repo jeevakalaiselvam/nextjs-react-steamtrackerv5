@@ -22,7 +22,7 @@ export const phaseItems = [
   // { id: PHASE_STORY, title: PHASE_STORY_TITLE },
   { id: PHASE_EASY, title: PHASE_EASY_TITLE },
   { id: PHASE_MISSABLE, title: PHASE_MISSABLE_TITLE },
-  // { id: PHASE_COLLECTIBLE, title: PHASE_COLLECTIBLE_TITLE },
+  { id: PHASE_COLLECTIBLE, title: PHASE_COLLECTIBLE_TITLE },
   { id: PHASE_HARD, title: PHASE_HARD_TITLE },
   { id: PHASE_GRIND, title: PHASE_GRIND_TITLE },
   // { id: PHASE_ONLINE, title: PHASE_ONLINE_TITLE },
