@@ -26,6 +26,7 @@ const Container = styled.div`
   padding: 1rem 1rem 1rem 1rem;
   opacity: ${(props) => (props.achieved ? "0.15" : "1")};
   position: relative;
+  z-index: 2000;
 
   &:hover {
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);

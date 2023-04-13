@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { calculateRecentHistory } from "../../helpers/xpHelper";
 import { setShowHistoryModal } from "../../store/actions/games.actions";
+import { calculateLevel } from "@/helpers/gameHelper";
 
 const Container = styled.div`
   display: flex;
@@ -71,10 +72,96 @@ const LevelContainer = styled.div`
   padding: 1rem 0.25rem; ;
 `;
 
+const Icon1 = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: gold;
+  margin-top: 2rem;
+  font-size: 1rem;
+  opacity: 0.75;
+`;
+
+const Icon2 = styled.div`
+  display: flex;
+  align-items: center;
+  color: gold;
+  justify-content: center;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  opacity: 0.75;
+`;
+
+const Icon3 = styled.div`
+  display: flex;
+  color: gold;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-size: 2rem;
+  opacity: 0.75;
+`;
+
+const Icon4 = styled.div`
+  display: flex;
+  align-items: center;
+  color: gold;
+  justify-content: center;
+  margin-left: 1rem;
+  font-size: 2rem;
+  opacity: 0.75;
+`;
+
+const Icon5 = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  color: gold;
+  font-size: 1.5rem;
+  opacity: 0.75;
+`;
+
+const Icon6 = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  font-size: 1rem;
+  color: gold;
+  opacity: 0.75;
+`;
+
+const LevelText = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: gold;
+  justify-content: center;
+  font-size: 2rem;
+`;
+
+const CurrentLevel = styled.div`
+  display: flex;
+  align-items: center;
+  color: gold;
+  justify-content: center;
+  font-size: 2rem;
+`;
+
+const NextLevel = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  opacity: 0.5;
+`;
+
 const ProfileLevel = (props) => {
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
   const { games } = steamtracker;
+  const { currentLevel, toNextlevel } = calculateLevel(games);
 
   return (
     <Container onClick={() => {}}>
@@ -84,7 +171,18 @@ const ProfileLevel = (props) => {
           <Title>Level Stats</Title>
           <IconEnd>{getIcon("sidebartitle")}</IconEnd>
         </Header>
-        <LevelContainer></LevelContainer>
+        <LevelContainer>
+          <Icon1>{getIcon("level")}</Icon1>
+          <Icon2>{getIcon("level")}</Icon2>
+          <Icon3>{getIcon("level")}</Icon3>
+          <LevelText>
+            <CurrentLevel>{currentLevel}</CurrentLevel>
+            <NextLevel>{toNextlevel}</NextLevel>
+          </LevelText>
+          <Icon4>{getIcon("level")}</Icon4>
+          <Icon5>{getIcon("level")}</Icon5>
+          <Icon6>{getIcon("level")}</Icon6>
+        </LevelContainer>
       </LevelFragment>
     </Container>
   );

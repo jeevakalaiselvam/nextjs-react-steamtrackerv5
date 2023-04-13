@@ -1,3 +1,4 @@
+import { getXPForPercentage } from "./achievementHelper";
 import {
   BACKLOG,
   BRONZE,
@@ -179,4 +180,22 @@ export const refreshGameDataByGameId = (games, gameId, gameRefreshedData) => {
   });
 
   return newGames;
+};
+
+export const XP_FOR_LEVEL = 10000;
+export const calculateLevel = (games) => {
+  let currentXPTotal = 0;
+
+  games?.length > 0 &&
+    games.forEach((game) => {
+      const gameAchievements = game?.achievements;
+      gameAchievements?.length > 0 &&
+        gameAchievements.forEach((achievement) => {
+          currentXPTotal += getXPForPercentage(achievement.percentage);
+        });
+    });
+  return {
+    currentLevel: Math.floor(currentXPTotal / XP_FOR_LEVEL),
+    toNextlevel: currentXPTotal % XP_FOR_LEVEL,
+  };
 };

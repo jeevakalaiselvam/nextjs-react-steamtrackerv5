@@ -60,20 +60,15 @@ const BRONZE_XP_POINTS = 5;
 export const getXPForPercentage = (percentage) => {
   if (percentage <= BRONZE_HIGHER && percentage > BRONZE_LOWER) {
     return BRONZE_XP_POINTS;
-  }
-  if (percentage <= COMMON_HIGHER && percentage > COMMON_LOWER) {
+  } else if (percentage <= COMMON_HIGHER && percentage > COMMON_LOWER) {
     return COMMON_XP_POINTS;
-  }
-  if (percentage <= RARE_HIGHER && percentage > RARE_LOWER) {
+  } else if (percentage <= RARE_HIGHER && percentage > RARE_LOWER) {
     return RARE_XP_POINTS;
-  }
-  if (percentage <= EPIC_HIGHER && percentage > EPIC_LOWER) {
+  } else if (percentage <= EPIC_HIGHER && percentage > EPIC_LOWER) {
     return EPIC_XP_POINTS;
-  }
-  if (percentage <= LEGENDARY_HIGHER && percentage > LEGENDARY_LOWER) {
+  } else if (percentage <= LEGENDARY_HIGHER && percentage > LEGENDARY_LOWER) {
     return LEGENDARY_XP_POINTS;
-  }
-  if (percentage <= MARVEL_HIGHER && percentage > MARVEL_LOWER) {
+  } else if (percentage <= MARVEL_HIGHER && percentage >= MARVEL_LOWER) {
     return MARVEL_XP_POINTS;
   }
 };

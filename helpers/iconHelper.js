@@ -49,6 +49,8 @@ export const getIcon = (type, color) => {
       return <HiStar />;
     case "phase":
       return <HiQuestionMarkCircle />;
+    case "level":
+      return <HiStar />;
     default:
       return <AiFillGold />;
   }

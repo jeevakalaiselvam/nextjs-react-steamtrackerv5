@@ -121,7 +121,28 @@ export default function KanbanPhase({ phase, title }) {
         <Star1>{getIcon("phase")}</Star1>
         <Star2>{getIcon("phase")}</Star2>
         <Star3>{getIcon("phase")}</Star3>
-        <Title>{title}</Title>
+        <Title>
+          {title +
+            ` [ ${
+              phase == PHASE_ALL
+                ? achievements.filter(
+                    (ach) =>
+                      ach.achieved != 1 &&
+                      !(phaseInfo[id][PHASE_EASY] ?? []).includes(ach.name) &&
+                      !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(
+                        ach.name
+                      ) &&
+                      !(phaseInfo[id][PHASE_GRIND] ?? []).includes(ach.name) &&
+                      !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(
+                        ach.name
+                      ) &&
+                      !(phaseInfo[id][PHASE_HARD] ?? []).includes(ach.name)
+                  ).length
+                : achievements.filter(({ name }) =>
+                    (phaseInfo[id][phase] ?? []).includes(name)
+                  ).length
+            } ]`}
+        </Title>
         <Star4>{getIcon("phase")}</Star4>
         <Star5>{getIcon("phase")}</Star5>
         <Star6>{getIcon("phase")}</Star6>
@@ -138,6 +159,7 @@ export default function KanbanPhase({ phase, title }) {
                 !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(ach.name) &&
                 !(phaseInfo[id][PHASE_HARD] ?? []).includes(ach.name)
             )
+            .sort((ach1, ach2) => ach2.percentage - ach1.percentage)
             .map((achievement) => {
               return (
                 <AchievementCard
@@ -152,6 +174,7 @@ export default function KanbanPhase({ phase, title }) {
         {phase != PHASE_ALL &&
           achievements
             .filter(({ name }) => (phaseInfo[id][phase] ?? []).includes(name))
+            .sort((ach1, ach2) => ach2.percentage - ach1.percentage)
             .map((achievement) => {
               return (
                 <AchievementCard
