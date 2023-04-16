@@ -261,15 +261,15 @@ export default function GameContent() {
         }
       } else {
         if (
-          !(phaseInfo[id][PHASE_STORY] ?? []).includes(achievement.name) &&
-          !(phaseInfo[id][PHASE_EASY] ?? []).includes(achievement.name) &&
-          !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(achievement.name) &&
-          !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(
+          !(phaseInfo[id]?.[PHASE_STORY] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id]?.[PHASE_EASY] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id]?.[PHASE_MISSABLE] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id]?.[PHASE_COLLECTIBLE] ?? []).includes(
             achievement.name
           ) &&
-          !(phaseInfo[id][PHASE_GRIND] ?? []).includes(achievement.name) &&
-          !(phaseInfo[id][PHASE_HARD] ?? []).includes(achievement.name) &&
-          !(phaseInfo[id][PHASE_ONLINE] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id]?.[PHASE_GRIND] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id]?.[PHASE_HARD] ?? []).includes(achievement.name) &&
+          !(phaseInfo[id]?.[PHASE_ONLINE] ?? []).includes(achievement.name) &&
           achievement.achieved != 1
         ) {
           return true;
