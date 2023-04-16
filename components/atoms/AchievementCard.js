@@ -32,6 +32,26 @@ const Container = styled.div`
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
     cursor: pointer;
   }
+
+  animation: ${(props) =>
+    props.animateRight ? `animateRight 0.25s linear` : ""};
+
+  @keyframes animateRight {
+    from {
+      -ms-transform: translateX(-100px);
+      -moz-transform: translateX(-100px);
+      -webkit-transform: translateX(-100px);
+      -o-transform: translateX(-100px);
+      transform: translateX(-100px);
+    }
+    to {
+      -ms-transform: translateX(0px);
+      -moz-transform: translateX(0px);
+      -webkit-transform: translateX(0px);
+      -o-transform: translateX(0px);
+      transform: translateX(0px);
+    }
+  }
 `;
 
 const IconContainer = styled.div`
@@ -129,6 +149,7 @@ export default function AchievementCard({
   disableOpacity,
   margin,
   width,
+  animateRight,
 }) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "achievement",
@@ -188,6 +209,7 @@ export default function AchievementCard({
 
   return (
     <Container
+      animateRight={animateRight}
       ref={drag}
       onMouseEnter={() => {
         setHovered(true);

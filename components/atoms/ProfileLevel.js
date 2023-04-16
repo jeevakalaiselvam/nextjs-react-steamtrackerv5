@@ -79,7 +79,7 @@ const Icon1 = styled.div`
   color: gold;
   margin-top: 2rem;
   font-size: 1rem;
-  opacity: 0.75;
+  opacity: 0.85;
 `;
 
 const Icon2 = styled.div`
@@ -89,7 +89,7 @@ const Icon2 = styled.div`
   justify-content: center;
   margin-top: 1rem;
   font-size: 1.5rem;
-  opacity: 0.75;
+  opacity: 0.85;
 `;
 
 const Icon3 = styled.div`
@@ -99,7 +99,7 @@ const Icon3 = styled.div`
   justify-content: center;
   margin-right: 1rem;
   font-size: 2rem;
-  opacity: 0.75;
+  opacity: 0.85;
 `;
 
 const Icon4 = styled.div`
@@ -109,7 +109,7 @@ const Icon4 = styled.div`
   justify-content: center;
   margin-left: 1rem;
   font-size: 2rem;
-  opacity: 0.75;
+  opacity: 0.85;
 `;
 
 const Icon5 = styled.div`
@@ -119,7 +119,7 @@ const Icon5 = styled.div`
   margin-top: 1rem;
   color: gold;
   font-size: 1.5rem;
-  opacity: 0.75;
+  opacity: 0.85;
 `;
 
 const Icon6 = styled.div`
@@ -129,7 +129,7 @@ const Icon6 = styled.div`
   margin-top: 2rem;
   font-size: 1rem;
   color: gold;
-  opacity: 0.75;
+  opacity: 0.85;
 `;
 
 const LevelText = styled.div`
@@ -154,7 +154,7 @@ const NextLevel = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  opacity: 0.5;
+  opacity: 0.85;
 `;
 
 const ProfileLevel = (props) => {

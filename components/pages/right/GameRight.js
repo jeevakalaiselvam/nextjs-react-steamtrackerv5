@@ -287,11 +287,12 @@ export default function GameRight() {
           achievementsUnlockedToday.map((achievement) => {
             return (
               <AchievementCard
+                animateRight={true}
                 achievement={achievement}
                 key={achievement.name}
                 gameId={game.id}
                 disableOpacity={true}
-                margin={"1rem 0rem 0rem 0rem"}
+                margin={"0.5rem 0rem 0rem 0rem"}
                 width={"300px"}
               />
             );
