@@ -31,6 +31,15 @@ export const actionRefreshGameData = (gameId, gameRefreshedData) => {
   };
 };
 
+export const actionSearchTermChanged = (searchTerm) => {
+  return (dispatch) => {
+    return dispatch({
+      type: TYPES.SEARCH_TERM_CHANGED,
+      payload: searchTerm,
+    });
+  };
+};
+
 export const actionAchievementSelected = (achievement) => {
   return (dispatch) => {
     return dispatch({

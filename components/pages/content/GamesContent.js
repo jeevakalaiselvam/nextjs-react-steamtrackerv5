@@ -1,4 +1,5 @@
 import GameCard from "@/components/atoms/GameCard";
+import Search from "@/components/atoms/Search";
 import TrophyFancy from "@/components/atoms/TrophyFancy";
 import {
   BACKLOG,
@@ -115,9 +116,10 @@ export default function GamesContent() {
   const router = useRouter();
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
-  const { games } = steamtracker;
+  const { games, searchTerm } = steamtracker;
 
   const GAME_HEIGHT = 150;
+  const innerSearchTerm = searchTerm ?? "";
 
   const gameListCategories = [
     {
@@ -177,16 +179,22 @@ export default function GamesContent() {
             </HeaderContainer>
             <GameList>
               {filteredGamesForCategory.length > 0 &&
-                filteredGamesForCategory.map((game) => {
-                  return (
-                    <GameCard
-                      game={game}
-                      height={GAME_HEIGHT}
-                      key={game.id}
-                      color={color}
-                    />
-                  );
-                })}
+                filteredGamesForCategory
+                  .filter((game) =>
+                    game.name
+                      .toLowerCase()
+                      .includes(innerSearchTerm.toLowerCase())
+                  )
+                  .map((game) => {
+                    return (
+                      <GameCard
+                        game={game}
+                        height={GAME_HEIGHT}
+                        key={game.id}
+                        color={color}
+                      />
+                    );
+                  })}
             </GameList>
           </GamesList>
         );

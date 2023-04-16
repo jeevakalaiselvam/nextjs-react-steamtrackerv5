@@ -24,6 +24,7 @@ const INITIAL_STATE = {
   journal: {},
   currentProfileLevel: "0",
   toProfileNextLevel: "0",
+  searchTerm: "",
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -120,6 +121,12 @@ const reducer = (state = INITIAL_STATE, action) => {
           ...(state?.journal ?? {}),
           [payload?.achievementId]: payload.journalData,
         },
+      };
+
+    case TYPES.SEARCH_TERM_CHANGED:
+      return {
+        ...state,
+        searchTerm: payload,
       };
 
     case TYPES.SET_HIDDEN_DESC_GAME:
