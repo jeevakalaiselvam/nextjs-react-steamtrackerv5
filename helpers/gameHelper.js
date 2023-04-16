@@ -182,7 +182,7 @@ export const refreshGameDataByGameId = (games, gameId, gameRefreshedData) => {
   return newGames;
 };
 
-export const XP_FOR_LEVEL = 10000;
+export const XP_FOR_LEVEL = 1000;
 export const calculateLevel = (games) => {
   let currentXPTotal = 0;
 
@@ -191,7 +191,9 @@ export const calculateLevel = (games) => {
       const gameAchievements = game?.achievements;
       gameAchievements?.length > 0 &&
         gameAchievements.forEach((achievement) => {
-          currentXPTotal += getXPForPercentage(achievement.percentage);
+          if (achievement.achieved == 1) {
+            currentXPTotal += getXPForPercentage(achievement.percentage);
+          }
         });
     });
   return {
