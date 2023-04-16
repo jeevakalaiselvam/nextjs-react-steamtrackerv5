@@ -9,6 +9,7 @@ import {
 import { TbRefresh, TbRefreshDot } from "react-icons/tb";
 import {
   HiExclamationCircle,
+  HiEye,
   HiFolderAdd,
   HiLightningBolt,
   HiOutlineQuestionMarkCircle,
@@ -51,6 +52,8 @@ export const getIcon = (type, color) => {
       return <HiQuestionMarkCircle />;
     case "level":
       return <HiStar />;
+    case "eye":
+      return <HiEye />;
     default:
       return <AiFillGold />;
   }

@@ -179,7 +179,12 @@ export default function GamesContent() {
               {filteredGamesForCategory.length > 0 &&
                 filteredGamesForCategory.map((game) => {
                   return (
-                    <GameCard game={game} height={GAME_HEIGHT} key={game.id} />
+                    <GameCard
+                      game={game}
+                      height={GAME_HEIGHT}
+                      key={game.id}
+                      color={color}
+                    />
                   );
                 })}
             </GameList>

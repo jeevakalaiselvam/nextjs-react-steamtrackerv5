@@ -128,18 +128,20 @@ export default function KanbanPhase({ phase, title }) {
                 ? achievements.filter(
                     (ach) =>
                       ach.achieved != 1 &&
-                      !(phaseInfo[id][PHASE_EASY] ?? []).includes(ach.name) &&
-                      !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(
+                      !(phaseInfo[id]?.[PHASE_EASY] ?? []).includes(ach.name) &&
+                      !(phaseInfo[id]?.[PHASE_MISSABLE] ?? []).includes(
                         ach.name
                       ) &&
-                      !(phaseInfo[id][PHASE_GRIND] ?? []).includes(ach.name) &&
-                      !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(
+                      !(phaseInfo[id]?.[PHASE_GRIND] ?? []).includes(
                         ach.name
                       ) &&
-                      !(phaseInfo[id][PHASE_HARD] ?? []).includes(ach.name)
+                      !(phaseInfo[id]?.[PHASE_COLLECTIBLE] ?? []).includes(
+                        ach.name
+                      ) &&
+                      !(phaseInfo[id]?.[PHASE_HARD] ?? []).includes(ach.name)
                   ).length
                 : achievements.filter(({ name }) =>
-                    (phaseInfo[id][phase] ?? []).includes(name)
+                    (phaseInfo[id]?.[phase] ?? []).includes(name)
                   ).length
             } ]`}
         </Title>
@@ -153,11 +155,13 @@ export default function KanbanPhase({ phase, title }) {
             .filter(
               (ach) =>
                 ach.achieved != 1 &&
-                !(phaseInfo[id][PHASE_EASY] ?? []).includes(ach.name) &&
-                !(phaseInfo[id][PHASE_MISSABLE] ?? []).includes(ach.name) &&
-                !(phaseInfo[id][PHASE_GRIND] ?? []).includes(ach.name) &&
-                !(phaseInfo[id][PHASE_COLLECTIBLE] ?? []).includes(ach.name) &&
-                !(phaseInfo[id][PHASE_HARD] ?? []).includes(ach.name)
+                !(phaseInfo[id]?.[PHASE_EASY] ?? []).includes(ach.name) &&
+                !(phaseInfo[id]?.[PHASE_MISSABLE] ?? []).includes(ach.name) &&
+                !(phaseInfo[id]?.[PHASE_GRIND] ?? []).includes(ach.name) &&
+                !(phaseInfo[id]?.[PHASE_COLLECTIBLE] ?? []).includes(
+                  ach.name
+                ) &&
+                !(phaseInfo[id]?.[PHASE_HARD] ?? []).includes(ach.name)
             )
             .sort((ach1, ach2) => ach2.percentage - ach1.percentage)
             .map((achievement) => {
@@ -173,7 +177,7 @@ export default function KanbanPhase({ phase, title }) {
             })}
         {phase != PHASE_ALL &&
           achievements
-            .filter(({ name }) => (phaseInfo[id][phase] ?? []).includes(name))
+            .filter(({ name }) => (phaseInfo[id]?.[phase] ?? []).includes(name))
             .sort((ach1, ach2) => ach2.percentage - ach1.percentage)
             .map((achievement) => {
               return (

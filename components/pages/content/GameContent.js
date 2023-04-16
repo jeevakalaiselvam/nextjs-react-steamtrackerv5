@@ -1,4 +1,5 @@
 import AchievementCard from "@/components/atoms/AchievementCard";
+import AchievementIconBig from "@/components/atoms/AchievementIcon";
 import KanbanPhase from "@/components/atoms/KanbanPhase";
 import {
   filteredAchievementsForSortAndFilterOption,
@@ -40,6 +41,7 @@ import {
   PHASE_MISSABLE,
   PHASE_ONLINE,
   PHASE_STORY,
+  PLANNER_VIEWTYPE_ICONS,
   PLANNER_VIEWTYPE_KANBAN,
   PLANNER_VIEWTYPE_SPLIT,
 } from "@/helpers/constantHelper";
@@ -89,6 +91,50 @@ const KanbanContainer = styled.div`
   justify-content: center;
   flex-direction: row;
   width: 100%;
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  align-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+  min-height: 90vh;
+  max-height: 90vh;
+`;
+
+const RemainingAchievements = styled.div`
+  min-height: 10vh;
+  max-height: 10vh;
+  min-width: 0vw;
+  max-width: 80vw;
+  overflow: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+const CompletedAchievements = styled.div`
+  overflow: scroll;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow: scroll;
+  width: 100%;
+  justify-content: flex-start;
+`;
+
+const RemainingTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CompletedTitle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
 `;
 
 const BacklogHeader = styled.div`
@@ -207,7 +253,7 @@ export default function GameContent() {
   }, [achievements, gameBacklogSort, gameBacklogFilter]);
 
   const phaseFilteredAchievements = React.useMemo(() => {
-    let achievementsInPhase = phaseInfo[id][phaseActive] ?? [];
+    let achievementsInPhase = phaseInfo[id]?.[phaseActive] ?? [];
     const filtered = achievements.filter((achievement) => {
       if (phaseActive !== PHASE_ALL) {
         if (achievementsInPhase.includes(achievement.name)) {
@@ -235,13 +281,13 @@ export default function GameContent() {
     achievements,
     phaseActive,
     id,
-    phaseInfo[id][PHASE_STORY],
-    phaseInfo[id][PHASE_EASY],
-    phaseInfo[id][PHASE_MISSABLE],
-    phaseInfo[id][PHASE_GRIND],
-    phaseInfo[id][PHASE_COLLECTIBLE],
-    phaseInfo[id][PHASE_HARD],
-    phaseInfo[id][PHASE_ONLINE],
+    phaseInfo[id]?.[PHASE_STORY] ?? [],
+    phaseInfo[id]?.[PHASE_EASY] ?? [],
+    phaseInfo[id]?.[PHASE_MISSABLE] ?? [],
+    phaseInfo[id]?.[PHASE_GRIND] ?? [],
+    phaseInfo[id]?.[PHASE_COLLECTIBLE] ?? [],
+    phaseInfo[id]?.[PHASE_HARD] ?? [],
+    phaseInfo[id]?.[PHASE_ONLINE] ?? [],
   ]);
 
   useEffect(() => {
@@ -437,6 +483,42 @@ export default function GameContent() {
             <KanbanPhase phase={PHASE_GRIND} title={"GRIND"} />
           </KanbanItemContainer>
         </KanbanContainer>
+      )}
+      {plannerViewType === PLANNER_VIEWTYPE_ICONS && (
+        <IconContainer>
+          <RemainingTitle>Remaining Achievements</RemainingTitle>
+          <RemainingAchievements>
+            {achievements?.length > 0 &&
+              achievements
+                .filter((ach) => ach.achieved != 1)
+                .map((achievement) => {
+                  return (
+                    <AchievementIconBig
+                      gameId={id}
+                      key={achievement.name}
+                      achievement={achievement}
+                      margin={"1rem 1rem 0 0"}
+                    />
+                  );
+                })}
+          </RemainingAchievements>
+          <CompletedTitle>Completed Achievements</CompletedTitle>
+          <CompletedAchievements>
+            {achievements?.length > 0 &&
+              achievements
+                .filter((ach) => ach.achieved == 1)
+                .map((achievement) => {
+                  return (
+                    <AchievementIconBig
+                      gameId={id}
+                      key={achievement.name}
+                      achievement={achievement}
+                      margin={"1rem 1rem 0 0"}
+                    />
+                  );
+                })}
+          </CompletedAchievements>
+        </IconContainer>
       )}
     </Container>
   );

@@ -5,6 +5,7 @@ export const RARE = "RARE";
 export const COMMON = "COMMON";
 export const BRONZE = "BRONZE";
 export const BACKLOG = "BACKLOG";
+export const NORMAL = "NORMAL";
 export const ALL = "ALL";
 
 export const MARVEL_COLOR = "#eb4b4b";

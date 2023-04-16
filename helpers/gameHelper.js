@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { getXPForPercentage } from "./achievementHelper";
 import {
   BACKLOG,
@@ -11,6 +12,8 @@ import {
   LEGENDARY_COLOR,
   MARVEL,
   MARVEL_COLOR,
+  NORMAL,
+  NORMAL_COLOR,
   RARE,
   RARE_COLOR,
 } from "./colorHelper";
@@ -199,6 +202,7 @@ export const calculateLevel = (games) => {
   return {
     currentLevel: Math.floor(currentXPTotal / XP_FOR_LEVEL),
     toNextlevel:
-      currentXPTotal - Math.floor(currentXPTotal / XP_FOR_LEVEL) * XP_FOR_LEVEL,
+      (Math.floor(currentXPTotal / XP_FOR_LEVEL) + 1) * XP_FOR_LEVEL -
+      currentXPTotal,
   };
 };

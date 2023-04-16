@@ -26,6 +26,7 @@ import {
   GAME_CATEGORY_MARVEL_TITLE,
   GAME_CATEGORY_RARE,
   GAME_CATEGORY_RARE_TITLE,
+  PLANNER_VIEWTYPE_ICONS,
   PLANNER_VIEWTYPE_KANBAN,
   PLANNER_VIEWTYPE_SPLIT,
 } from "@/helpers/constantHelper";
@@ -147,13 +148,16 @@ export default function GameHeader() {
     },
   ];
 
-  const changePlannerViewType = () => {
-    switch (plannerViewType) {
+  const changePlannerViewType = (type) => {
+    switch (type) {
       case PLANNER_VIEWTYPE_SPLIT:
-        dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_KANBAN));
+        dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_SPLIT));
         break;
       case PLANNER_VIEWTYPE_KANBAN:
-        dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_SPLIT));
+        dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_KANBAN));
+        break;
+      case PLANNER_VIEWTYPE_ICONS:
+        dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_ICONS));
         break;
       default:
         dispatch(actionTogglePlannerViewType(PLANNER_VIEWTYPE_SPLIT));
@@ -163,11 +167,64 @@ export default function GameHeader() {
 
   return (
     <Container>
-      <ViewType onClick={changePlannerViewType}>
+      <ViewType>
         {(plannerViewType ?? PLANNER_VIEWTYPE_SPLIT) ===
-          PLANNER_VIEWTYPE_KANBAN && <SwitchButton>SPLIT VIEW</SwitchButton>}
+          PLANNER_VIEWTYPE_KANBAN && (
+          <>
+            <SwitchButton
+              onClick={() => {
+                changePlannerViewType(PLANNER_VIEWTYPE_SPLIT);
+              }}
+            >
+              SPLIT VIEW
+            </SwitchButton>
+            <SwitchButton
+              onClick={() => {
+                changePlannerViewType(PLANNER_VIEWTYPE_ICONS);
+              }}
+            >
+              ICON VIEW
+            </SwitchButton>
+          </>
+        )}
         {(plannerViewType ?? PLANNER_VIEWTYPE_SPLIT) ===
-          PLANNER_VIEWTYPE_SPLIT && <SwitchButton>KANBAN VIEW</SwitchButton>}
+          PLANNER_VIEWTYPE_SPLIT && (
+          <>
+            <SwitchButton
+              onClick={() => {
+                changePlannerViewType(PLANNER_VIEWTYPE_KANBAN);
+              }}
+            >
+              KANBAN VIEW
+            </SwitchButton>
+            <SwitchButton
+              onClick={() => {
+                changePlannerViewType(PLANNER_VIEWTYPE_ICONS);
+              }}
+            >
+              ICON VIEW
+            </SwitchButton>
+          </>
+        )}
+        {(plannerViewType ?? PLANNER_VIEWTYPE_SPLIT) ===
+          PLANNER_VIEWTYPE_ICONS && (
+          <>
+            <SwitchButton
+              onClick={() => {
+                changePlannerViewType(PLANNER_VIEWTYPE_SPLIT);
+              }}
+            >
+              SPLIT VIEW
+            </SwitchButton>
+            <SwitchButton
+              onClick={() => {
+                changePlannerViewType(PLANNER_VIEWTYPE_KANBAN);
+              }}
+            >
+              KANBAN VIEW
+            </SwitchButton>
+          </>
+        )}
       </ViewType>
       <TrophyObtained>
         <TrophyFancy
