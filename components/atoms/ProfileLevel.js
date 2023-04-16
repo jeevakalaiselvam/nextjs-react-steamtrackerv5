@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { calculateRecentHistory } from "../../helpers/xpHelper";
 import { setShowHistoryModal } from "../../store/actions/games.actions";
-import { calculateLevel } from "@/helpers/gameHelper";
 
 const Container = styled.div`
   display: flex;
@@ -160,8 +159,7 @@ const NextLevel = styled.div`
 const ProfileLevel = (props) => {
   const dispatch = useDispatch();
   const steamtracker = useSelector((state) => state.steamtracker);
-  const { games } = steamtracker;
-  const { currentLevel, toNextlevel } = calculateLevel(games);
+  const { games, currentProfileLevel, toProfileNextLevel } = steamtracker;
 
   return (
     <Container onClick={() => {}}>
@@ -176,8 +174,8 @@ const ProfileLevel = (props) => {
           <Icon2>{getIcon("level")}</Icon2>
           <Icon3>{getIcon("level")}</Icon3>
           <LevelText>
-            <CurrentLevel>{currentLevel}</CurrentLevel>
-            <NextLevel>{toNextlevel}</NextLevel>
+            <CurrentLevel>{currentProfileLevel ?? "0"}</CurrentLevel>
+            <NextLevel>{toProfileNextLevel ?? "0"}</NextLevel>
           </LevelText>
           <Icon4>{getIcon("level")}</Icon4>
           <Icon5>{getIcon("level")}</Icon5>

@@ -196,6 +196,7 @@ export const calculateLevel = (games) => {
     });
   return {
     currentLevel: Math.floor(currentXPTotal / XP_FOR_LEVEL),
-    toNextlevel: currentXPTotal % XP_FOR_LEVEL,
+    toNextlevel:
+      currentXPTotal - Math.floor(currentXPTotal / XP_FOR_LEVEL) * XP_FOR_LEVEL,
   };
 };

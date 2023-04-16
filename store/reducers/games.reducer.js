@@ -1,6 +1,6 @@
 import { addOrRemoveAchievementFromPhase } from "@/helpers/achievementHelper";
 import { PHASE_ALL } from "@/helpers/constantHelper";
-import { refreshGameDataByGameId } from "@/helpers/gameHelper";
+import { calculateLevel, refreshGameDataByGameId } from "@/helpers/gameHelper";
 import * as TYPES from "../types/games.types";
 
 const INITIAL_STATE = {
@@ -22,6 +22,8 @@ const INITIAL_STATE = {
   achievementPhaseVisible: false,
   pinnedAchievements: [],
   journal: {},
+  currentProfileLevel: "0",
+  toProfileNextLevel: "0",
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -37,6 +39,22 @@ const reducer = (state = INITIAL_STATE, action) => {
           payload.gameRefreshedData
         ),
         lastUnlockedTime: payload.lastUnlockedTime,
+        currentProfileLevel:
+          calculateLevel(
+            refreshGameDataByGameId(
+              state.games,
+              payload.gameId,
+              payload.gameRefreshedData
+            )
+          )?.currentLevel ?? "0",
+        toProfileNextLevel:
+          calculateLevel(
+            refreshGameDataByGameId(
+              state.games,
+              payload.gameId,
+              payload.gameRefreshedData
+            )
+          )?.toNextlevel ?? "0",
       };
 
     case TYPES.GAME_ADD_ACHIEVEMENT_PHASE:
